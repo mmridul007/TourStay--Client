@@ -1,0 +1,144 @@
+.featuredSlider {
+  width: 100%;
+  max-width: 1024px;
+  position: relative;
+  margin: 0 auto;
+  overflow: hidden;
+  min-height: 250px;
+}
+
+.loading,
+.error {
+  width: 100%;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #555;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+}
+
+.error {
+  color: #d32f2f;
+  background-color: #ffebee;
+}
+
+.featuredSliderTrack {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.featuredItem {
+  position: relative;
+  color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 250px;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.featuredImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.featuredTitles {
+  position: absolute;
+  bottom: 20px;
+  left: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.featuredTitles h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.featuredTitles h2 {
+  margin: 5px 0 0;
+  font-weight: 300;
+  font-size: 16px;
+}
+
+.sliderControls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.sliderControlBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: none;
+  color: #333;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.sliderControlBtn:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .featuredSlider {
+    max-width: 100%;
+    
+  }
+}
+
+@media (max-width: 768px) {
+  .featuredItem {
+    height: 200px;
+  }
+
+  .featuredTitles h1 {
+    font-size: 20px;
+  }
+
+  .featuredTitles h2 {
+    font-size: 14px;
+  }
+
+  .loading,
+  .error {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .featuredItem {
+    height: 180px;
+  }
+
+  .featuredTitles {
+    left: 20px;
+    bottom: 15px;
+  }
+
+  .featuredTitles h1 {
+    font-size: 18px;
+  }
+
+  .featuredTitles h2 {
+    font-size: 12px;
+  }
+
+  .loading,
+  .error {
+    height: 180px;
+  }
+}

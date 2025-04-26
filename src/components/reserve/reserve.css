@@ -1,0 +1,389 @@
+.reserve {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.rContainer {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.rClose {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #666;
+  transition: color 0.3s;
+  z-index: 1;
+}
+
+.rClose:hover {
+  color: #333;
+}
+
+.rHeader {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
+.rHeader h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.rHeader p {
+  margin: 5px 0 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.rRoomsList {
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.rItem {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.rItemInfo {
+  padding: 15px;
+  background-color: #f9f9f9;
+}
+
+.rTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.rDesc {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.rDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.rDetailItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+.rPrice {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.rPriceLabel {
+  color: #666;
+  font-size: 12px;
+}
+
+.rPriceValue {
+  font-weight: 600;
+  color: #0071c2;
+  font-size: 18px;
+}
+
+.rSelectRooms {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 15px;
+  border-top: 1px solid #eee;
+}
+
+.room {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.roomLabel {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.room input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.room input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.unavailable {
+  color: #ff3366;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.rSummary {
+  border-top: 1px solid #eee;
+  padding: 20px;
+  background-color: #f9f9f9;
+  position: sticky;
+  bottom: 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.rTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.rTotalPrice {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0071c2;
+}
+
+.rButton {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #0071c2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-align: center;
+}
+
+.rButton:hover {
+  background-color: #005999;
+}
+
+.rButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.rLoading,
+.rError {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+}
+
+.rError {
+  color: #ff3366;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .reserve {
+    padding: 0px;
+  }
+
+  .rContainer {
+    max-height: 95vh;
+    margin: 10px 0;
+    width: 95%;
+  }
+
+  .rHeader {
+    padding: 15px 15px 12px;
+  }
+
+  .rHeader h2 {
+    font-size: 20px;
+  }
+
+  .rRoomsList {
+    padding: 15px 12px;
+  }
+
+  .rItemInfo {
+    padding: 12px;
+  }
+
+  .rTitle {
+    font-size: 16px;
+  }
+
+  .rDesc {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .rDetails {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .rPrice {
+    align-items: flex-start;
+    margin-top: 5px;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .rPriceValue {
+    font-size: 16px;
+  }
+
+  .rSelectRooms {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .roomLabel {
+    font-size: 13px;
+  }
+
+  .rSummary {
+    padding: 15px;
+  }
+
+  .rButton {
+    padding: 12px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reserve {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .rContainer {
+    border-radius: 12px 12px 0 0;
+    max-height: 85vh;
+    height: auto;
+    margin: 0;
+    width: 100%;
+  }
+
+  .rRoomsList {
+    padding: 12px 10px;
+  }
+
+  .rSelectRooms {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .rButton {
+    font-size: 14px;
+    padding: 12px 15px;
+    border-radius: 4px;
+  }
+
+  .rTotalPrice {
+    font-size: 18px;
+  }
+
+  .rClose {
+    font-size: 20px;
+    top: 10px;
+    right: 10px;
+  }
+
+  .room {
+    padding: 5px;
+  }
+
+  .rItem {
+    margin-bottom: 15px;
+  }
+
+  .rItemInfo {
+    padding: 10px;
+  }
+
+  .rDetails {
+    gap: 6px;
+  }
+
+  .rDetailItem {
+    font-size: 13px;
+  }
+
+  .roomLabel {
+    margin-bottom: 4px;
+  }
+
+  .unavailable {
+    font-size: 11px;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 350px) {
+  .rSelectRooms {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 6px;
+  }
+
+  .rTitle {
+    font-size: 15px;
+  }
+
+  .rDesc {
+    font-size: 12px;
+  }
+
+  .roomLabel {
+    font-size: 12px;
+  }
+
+  .room input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
+}

@@ -1,0 +1,173 @@
+.register {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  padding: 16px;
+  position: relative;
+}
+
+.register .registerTitle {
+  font-size: 32px;
+  font-weight: bold;
+  color: #1e3a8a;
+  margin-bottom: 8px;
+  position: absolute;
+  top: 1%;
+}
+
+.register .rContainer {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  margin-top: 40px;
+}
+
+.register .rContainer img {
+  width: 200px;
+  margin: 0 auto 24px;
+  display: block;
+}
+
+.register .formGroup {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.register .formRow {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.register .formGroup.half {
+  flex: 1;
+}
+
+.register label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #374151;
+  font-size: 14px;
+}
+
+.register .required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.register .rInput {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.register .rInput:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+.register .rInput.inputError {
+  border-color: #ef4444;
+}
+
+.register .rInput.disabled {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.register .errorText {
+  display: block;
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.register .rButton {
+  width: 100%;
+  padding: 12px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 8px;
+}
+
+.register .rButton:hover {
+  background: #1e3a8a;
+}
+
+.register .rButton:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.register .errorMessage {
+  color: #ef4444;
+  margin-top: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.register .successMessage {
+  color: #10b981;
+  margin-top: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.register .loginLink {
+  margin-top: 24px;
+  text-align: center;
+  color: #4b5563;
+}
+
+.register .loginLink a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.register .loginLink a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .register {
+    padding: 16px;
+  }
+
+  .register .registerTitle {
+    font-size: 24px;
+    top: 2%;
+  }
+
+  .register .rContainer {
+    padding: 20px;
+  }
+
+  .register .formRow {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .register .rContainer img {
+    width: 150px;
+  }
+}

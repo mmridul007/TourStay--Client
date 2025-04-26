@@ -1,0 +1,166 @@
+.fpContainer {
+  width: 100%;
+  max-width: 1024px;
+  position: relative;
+  margin: 0 auto;
+  padding-bottom: 40px; /* Space for navigation buttons */
+}
+
+.fpWrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.fp {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  transition: transform 0.5s ease-in-out;
+}
+
+.fpItem {
+  flex: 0 0 calc(25% - 15px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.fpItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.fpImg {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.fpName {
+  color: #333;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fpCity {
+  font-weight: 300;
+  text-transform: capitalize;
+}
+
+.fpPrice {
+  font-weight: 500;
+}
+
+.fpRating {
+  display: flex;
+  align-items: center;
+}
+
+.fpRating > button {
+  background-color: #003580;
+  color: white;
+  border: none;
+  padding: 3px;
+  margin-right: 10px;
+  font-weight: bold;
+  border-radius: 3px;
+}
+
+.fpRating > span {
+  font-size: 14px;
+}
+
+.fpSliderControls {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  gap: 10px;
+  margin: 10px;
+}
+
+.fpNavButton {
+  background-color: #003580;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.fpNavButton:hover:not(.disabled) {
+  background-color: #004db3;
+}
+
+.fpNavButton.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.fpLoading {
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+  .fpItem {
+    flex: 0 0 calc(33.333% - 13.333px);
+  }
+}
+
+@media (max-width: 768px) {
+  .fpItem {
+    flex: 0 0 calc(50% - 10px);
+  }
+
+  .fpImg {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fpItem {
+    flex: 0 0 100%;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .fp {
+    gap: 0; /* Remove gap for single card view */
+  }
+
+  .fpImg {
+    height: 200px;
+  }
+
+  /* Ensure wrapper is properly sized for a single card */
+  .fpWrapper {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  /* Keep navigation at the bottom right */
+  .fpSliderControls {
+    right: 0;
+    bottom: 0;
+    left: auto;
+    transform: none;
+  }
+}

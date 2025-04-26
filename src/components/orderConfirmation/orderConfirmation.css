@@ -1,0 +1,302 @@
+/* Order Confirmation Styles */
+.order-confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.order-confirmation-container {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 25px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #555;
+}
+
+.order-confirmation-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+.booking-summary,
+.customer-info,
+.promo-section,
+.price-breakdown,
+.payment-methods {
+  margin-bottom: 25px;
+}
+
+.booking-summary h3,
+.customer-info h3,
+.promo-section h3,
+.price-breakdown h3,
+.payment-methods h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #444;
+}
+
+.summary-details {
+  background-color: #f8f8f8;
+  padding: 15px;
+  border-radius: 6px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.summary-row:last-child {
+  margin-bottom: 0;
+}
+
+.summary-row span:first-child {
+  font-weight: 500;
+  color: #555;
+}
+
+/* Customer info section */
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.edit-info-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.loading-indicator {
+  text-align: center;
+  padding: 15px;
+  color: #666;
+  font-style: italic;
+}
+
+.info-inputs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #555;
+  font-size: 14px;
+}
+
+.input-group input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.input-group input:disabled {
+  background-color: #f9f9f9;
+  cursor: not-allowed;
+}
+
+/* Promo section */
+.promo-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.promo-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.promo-input button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 0 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.promo-input button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.promo-success {
+  color: #4caf50;
+  font-size: 14px;
+}
+
+.promo-error {
+  color: #f44336;
+  font-size: 14px;
+}
+
+/* Price breakdown */
+.price-breakdown {
+  background-color: #f8f8f8;
+  padding: 15px;
+  border-radius: 6px;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.price-row.platform-fee {
+  color: #666;
+}
+
+.price-row.discount {
+  color: #4caf50;
+}
+
+.price-row.total {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Payment methods */
+.payment-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.payment-option {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.payment-option.selected {
+  border-color: #4caf50;
+  background-color: #f0f9f0;
+}
+
+.payment-option input {
+  margin-right: 10px;
+}
+
+.payment-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.payment-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.payment-error {
+  color: #f44336;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Action buttons */
+.confirmation-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.cancel-btn,
+.confirm-btn {
+  padding: 12px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  border: none;
+}
+
+.cancel-btn {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.confirm-btn {
+  background-color: #4caf50;
+  color: white;
+  flex: 1;
+  margin-left: 15px;
+}
+
+.confirm-btn:disabled,
+.cancel-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 768px) {
+  .payment-options {
+    grid-template-columns: 1fr;
+  }
+
+  .confirmation-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .confirm-btn {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,210 @@
+.listContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 0 15px;
+}
+
+.listWrapper {
+  width: 100%;
+  max-width: 1024px;
+  display: flex;
+  gap: 20px;
+}
+
+.listSearch {
+  flex: 1;
+  background-color: #febb02;
+  padding: 15px;
+  border-radius: 10px;
+  position: sticky;
+  top: 10px;
+  height: max-content;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.lsTitle {
+  font-size: 20px;
+  color: #555;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.lsItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.lsItem > label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.lsItem > input {
+  height: 38px;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.lsItem > span {
+  height: 38px;
+  padding: 5px 10px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.lsOptions {
+  padding: 10px;
+  background-color: white;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.lsOptionItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  color: #555;
+  font-size: 14px;
+  align-items: center;
+}
+
+.lsOptionText small {
+  color: #777;
+}
+
+.lsOptionInput {
+  width: 70px;
+  height: 30px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  text-align: center;
+}
+
+.listSearch > button {
+  padding: 12px;
+  background-color: #0071c2;
+  color: white;
+  border: none;
+  width: 100%;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.listSearch > button:hover {
+  background-color: #005fa3;
+}
+
+.listResult {
+  flex: 3;
+}
+
+/* Mobile Collapsible Search */
+@media screen and (max-width: 768px) {
+  .listWrapper {
+    flex-direction: column;
+  }
+
+  .listSearch {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .listResult {
+    width: 100%;
+  }
+
+  /* Mobile collapsible search styles */
+  .toggleSearchBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    padding: 0;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+
+  .toggleSearchBtn .icon {
+    transition: transform 0.3s ease;
+  }
+
+  .toggleSearchBtn .icon.open {
+    transform: rotate(180deg);
+  }
+
+  .searchCollapseContainer {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .searchCollapseContainer.closed {
+    max-height: 0;
+  }
+
+  .searchCollapseContainer.open {
+    max-height: 1000px; /* Arbitrary large height */
+  }
+
+  /* Always show destination field */
+  .destinationField {
+    display: flex !important;
+  }
+
+  /* Special search container for mobile */
+  .mobileSearchContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mobileSearchHeader {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .mobileDestination {
+    flex: 1;
+  }
+
+  .mobileSearchBtn {
+    min-width: 80px;
+    height: 50px;
+    margin-top: 23px;
+    background-color: #0071c2;
+    color: #fffdfd;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+}
+
+/* Date picker responsiveness */
+@media screen and (max-width: 480px) {
+  .rdrMonth {
+    width: 100% !important;
+  }
+
+  .rdrDefinedRangesWrapper {
+    display: none;
+  }
+}

@@ -1,0 +1,113 @@
+.pListContainer {
+  width: 100%;
+  max-width: 1024px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pList {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  position: relative;
+}
+
+.pListSlider {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  transition: transform 0.4s ease;
+}
+
+.pListItem {
+  flex: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  min-width: calc(20% - 16px);
+}
+
+.pListImg {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.pListTitles > h1 {
+  font-size: 18px;
+  color: #444;
+  text-transform: capitalize;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.pListTitles > h2 {
+  font-size: 14px;
+  font-weight: 300;
+  margin: 0;
+}
+
+.sliderControls {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.sliderBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.sliderBtn:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Media queries for mobile */
+@media screen and (max-width: 768px) {
+  .pListContainer {
+    overflow: hidden;
+  }
+
+  .pList {
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .pListSlider {
+    width: 200%; /* Make the slider twice as wide to show 2 items */
+    transform: translateX(0);
+  }
+
+  .pListItem {
+    min-width: calc(50% - 5px); /* Each item takes up 50% minus gap */
+    flex: 0 0 calc(50% - 5px);
+  }
+}
+
+/* For very small screens */
+@media screen and (max-width: 480px) {
+  .pListImg {
+    height: 120px;
+  }
+
+  .pListTitles > h1 {
+    font-size: 16px;
+  }
+
+  .pListTitles > h2 {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,147 @@
+.footer {
+  background-color: #383737;
+  color: #fff;
+  padding: 40px 20px;
+  position: relative;
+  width: 92%;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/* Company Logo and Information */
+.footer-company {
+  flex: 1;
+  min-width: 300px;
+  padding-right: 40px;
+  margin-bottom: 30px;
+}
+
+.footer-logo {
+  margin-bottom: 20px;
+}
+
+.footer-logo img {
+  max-width: 280px;
+  height: auto;
+}
+
+.footer-description {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #ccc;
+}
+
+/* Links and Social Media Section */
+.footer-links {
+  display: flex;
+  flex: 2;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer-section {
+  min-width: 150px;
+  margin-bottom: 30px;
+  padding-right: 15px;
+}
+
+.footer-section h3 {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #0071c2;
+}
+
+/* Contact Information */
+.contact-info li {
+  color: #ccc;
+  margin-bottom: 10px;
+}
+
+/* Social Icons */
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons a {
+  display: inline-block;
+  color: #fff;
+  font-size: 20px;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.social-icons a:hover {
+  color: #0071c2;
+  transform: translateY(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .footer-container {
+    flex-direction: column;
+  }
+
+  .footer-company {
+    text-align: center;
+    padding-right: 0;
+    margin-bottom: 40px;
+  }
+
+  .footer-logo {
+    display: flex;
+    justify-content: center;
+  }
+
+  .footer-links {
+    justify-content: space-around;
+  }
+
+  .footer-section {
+    min-width: 40%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-section {
+    min-width: 80%;
+    text-align: center;
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
+}

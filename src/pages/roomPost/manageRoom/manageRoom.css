@@ -1,0 +1,883 @@
+/* Base Styles */
+.manageRooms {
+  padding: 1.5rem;
+  background-color: #f9fafb;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
+}
+
+.manageRoomsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.manageRoomsHeader h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+/* Buttons */
+.addRoomButton,
+.cancelButton,
+.submitButton {
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+/* Button styles with equal width */
+.viewButton,
+.editButton,
+.deleteButton {
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-weight: 500;
+  font-size: 0.875rem;
+  flex: 1;
+  text-align: center;
+  min-width: 0;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.viewButton {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.viewButton:hover {
+  background-color: #bae6fd;
+  transform: translateY(-1px);
+}
+
+/* More prominent edit button with important color */
+.editButton {
+  background-color: #047857;
+  color: white;
+  box-shadow: 0 1px 2px rgba(4, 120, 87, 0.2);
+}
+
+.editButton:hover {
+  background-color: #065f46;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(4, 120, 87, 0.15);
+}
+
+.deleteButton {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.deleteButton:hover {
+  background-color: #fee2e2;
+  transform: translateY(-1px);
+}
+
+.deleteButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.addRoomButton {
+  background-color: #0369a1;
+  color: white;
+  padding: 0.625rem 1.25rem;
+  box-shadow: 0 2px 4px rgba(3, 105, 161, 0.2);
+}
+
+.addRoomButton:hover {
+  background-color: #0284c7;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(3, 105, 161, 0.15);
+}
+
+/* Empty State */
+.noRoomsMessage {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
+}
+
+.noRoomsMessage p {
+  margin-bottom: 1.5rem;
+  color: #64748b;
+  font-size: 1rem;
+}
+
+/* Room List */
+.roomsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Enhanced Room Card */
+.roomCard {
+  display: flex;
+  background-color: white;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid #f1f5f9;
+  border-left: 4px solid transparent;
+}
+
+.roomCard:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.12);
+  border-color: #e2e8f0;
+  border-left-color: #0369a1;
+}
+
+.roomImageContainer {
+  width: 14rem;
+  height: 10.5rem;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.roomImageContainer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 70%, rgba(0, 0, 0, 0.05));
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.roomCard:hover .roomImageContainer::after {
+  opacity: 1;
+}
+
+.roomImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.roomCard:hover .roomImage {
+  transform: scale(1.05);
+}
+
+.roomDetails {
+  padding: 1.25rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: white;
+}
+
+.roomDetails::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -1px;
+  height: 100%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, #e2e8f0, transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.roomCard:hover .roomDetails::before {
+  opacity: 1;
+}
+
+.roomDetails h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.3;
+}
+
+.roomLocation {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.roomLocation::before {
+  content: "📍";
+  font-size: 0.875rem;
+}
+
+.roomPrice {
+  font-weight: 700;
+  color: #0369a1;
+  margin-bottom: 1.25rem;
+  font-size: 1.125rem;
+}
+
+.roomPrice::before {
+  content: "৳ ";
+  font-weight: 500;
+}
+
+.roomAvailabilityStatus {
+  margin-bottom: 1.25rem;
+}
+
+.roomActions {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.roomSlotsInfo {
+  margin-top: 1.25rem;
+  text-align: right;
+  font-size: 0.875rem;
+  color: #64748b;
+  font-style: italic;
+  background-color: #f8fafc;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px dashed #e2e8f0;
+}
+
+/* Status Indicators */
+.availabilityBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+.availabilityBadge.available {
+  background-color: #dcfce7;
+  color: #16a34a;
+  box-shadow: 0 1px 3px rgba(22, 163, 74, 0.1);
+}
+
+.availabilityBadge.available::before {
+  content: "•";
+  margin-right: 0.375rem;
+  font-size: 1.25rem;
+  line-height: 0;
+  animation: pulse 2s infinite;
+}
+
+.availabilityBadge.unavailable {
+  background-color: #fee2e2;
+  color: #dc2626;
+  box-shadow: 0 1px 3px rgba(220, 38, 38, 0.1);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1.25rem;
+  backdrop-filter: blur(0.1875rem);
+}
+
+.modalContent {
+  background-color: #f8fafc;
+  border-radius: 0.75rem;
+  width: 100%;
+  max-width: 52rem;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 1.75rem;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.625rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modalContent h2 {
+  margin: 0 0 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding-bottom: 0.75rem;
+  border-bottom: 0.125rem solid #f0f4f7;
+  color: #0369a1;
+  letter-spacing: -0.025em;
+}
+
+.formSection {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+}
+
+.formSection h3 {
+  color: #0369a1;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.formGroup {
+  margin-bottom: 1.25rem;
+}
+
+.formGroup label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #334155;
+  font-size: 0.9375rem;
+}
+
+.formGroup input[type="text"],
+.formGroup input[type="number"],
+.formGroup select,
+.formGroup textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.375rem;
+  font-size: 0.9375rem;
+  transition: all 0.2s;
+  color: #334155;
+  background-color: #f8fafc;
+}
+
+.formGroup input[type="text"]:focus,
+.formGroup input[type="number"]:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+  background-color: white;
+}
+
+.formGroup input[type="checkbox"] {
+  margin-right: 0.5rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 0.25rem;
+  border: 1px solid #cbd5e1;
+  accent-color: #0369a1;
+}
+
+.formGroup input[type="checkbox"] + label {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+/* Checkbox groups styling */
+.checkboxGroup {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 0.625rem;
+}
+
+.checkboxGroup .formGroup {
+  margin-bottom: 0.375rem;
+  display: flex;
+  align-items: center;
+}
+
+.checkboxWithDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.checkboxWithDetails > div {
+  display: flex;
+  align-items: center;
+}
+
+.checkboxWithDetails input[type="text"] {
+  margin-top: 0.375rem;
+  border-left: 3px solid #0ea5e9;
+}
+
+/* Photo upload styling */
+.photoUploadContainer {
+  margin-top: 1rem;
+}
+
+.photoUploadHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.photoUploadHeader h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.photoUploadInstructions {
+  font-size: 0.8125rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+.photoUploadBox {
+  border: 2px dashed #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  background-color: #f8fafc;
+  transition: all 0.2s ease;
+  margin-bottom: 1.5rem;
+}
+
+.photoUploadBox:hover {
+  border-color: #bae6fd;
+  background-color: #f0f9ff;
+}
+
+.photoUploadBox input[type="file"] {
+  display: none;
+}
+
+.uploadPhotoBtn {
+  background-color: #0369a1;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.uploadPhotoBtn:hover {
+  background-color: #0284c7;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.uploadIcon {
+  font-size: 1.25rem;
+}
+
+.photoPreviewContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.photoPreview {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.photoPreview:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.photoPreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.photoPreview:hover img {
+  transform: scale(1.05);
+}
+
+.photoPreview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.photoPreview:hover::after {
+  opacity: 1;
+}
+
+.removePhotoBtn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.25rem;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #dc2626;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 1;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.photoPreview:hover .removePhotoBtn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.removePhotoBtn:hover {
+  background-color: white;
+  transform: scale(1.1) !important;
+}
+
+.photoPreviewBadge {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.photoPreview:hover .photoPreviewBadge {
+  opacity: 1;
+}
+
+.primaryPhotoIndicator {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background-color: #047857;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  z-index: 1;
+}
+
+.setPrimaryBtn {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #0369a1;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 1;
+  opacity: 0;
+}
+
+.photoPreview:hover .setPrimaryBtn {
+  opacity: 1;
+}
+
+.setPrimaryBtn:hover {
+  background-color: white;
+  color: #0284c7;
+}
+
+/* Drag and drop styles */
+.photoUploadBox.dragOver {
+  border-color: #0284c7;
+  background-color: #e0f2fe;
+}
+
+/* Error message styling */
+.errorText {
+  color: #dc2626;
+  font-size: 0.8125rem;
+  display: block;
+  margin-top: 0.375rem;
+}
+
+/* Modal actions styling */
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1.5rem;
+}
+
+.cancelButton,
+.submitButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  transition: all 0.25s ease;
+}
+
+.cancelButton {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: #e2e8f0;
+}
+
+.submitButton {
+  background-color: #0369a1;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 4px rgba(3, 105, 161, 0.2);
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #0284c7;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(3, 105, 161, 0.15);
+}
+
+.cancelButton:disabled,
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Utility styles for input validation */
+.formGroup input:focus:valid,
+.formGroup select:focus:valid,
+.formGroup textarea:focus:valid {
+  border-color: #059669;
+}
+
+.formGroup input:focus:invalid,
+.formGroup select:focus:invalid,
+.formGroup textarea:focus:invalid {
+  border-color: #dc2626;
+}
+
+/* Required field indicators */
+.formGroup label.required::after {
+  content: "*";
+  color: #dc2626;
+  margin-left: 0.25rem;
+}
+
+/* Improved Form Layout */
+.formSection:not(:first-of-type) {
+  margin-top: 2rem;
+}
+
+/* Multi-select options styling */
+.formGroup div:has(input[type="checkbox"]) {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Responsive styles */
+@media (max-width: 48rem) {
+  .modalContent {
+    padding: 1.25rem;
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+
+  .checkboxGroup {
+    grid-template-columns: 1fr;
+  }
+
+  .photoPreviewContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .roomCard {
+    flex-direction: column;
+  }
+
+  .roomImageContainer {
+    width: 100%;
+    height: 13rem;
+  }
+
+  .modalActions {
+    flex-direction: column-reverse;
+    gap: 0.625rem;
+  }
+
+  .cancelButton,
+  .submitButton {
+    width: 100%;
+  }
+
+  .roomActions {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    position: relative;
+    z-index: 5;
+  }
+  
+  .viewButton, .editButton, .deleteButton {
+    padding: 0.5rem;
+    font-size: 0.8125rem;
+  }
+  
+  .photoPreviewContainer {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  
+  .photoUploadBox {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 30rem) {
+  .manageRoomsHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.625rem;
+  }
+
+  .addRoomButton {
+    width: 100%;
+  }
+
+  .modalContent {
+    padding: 1.125rem;
+  }
+
+  .modalContent h2 {
+    font-size: 1.3rem;
+  }
+
+  .formSection {
+    padding: 1.25rem;
+  }
+
+  .photoPreviewContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .modalActions {
+    flex-direction: column-reverse;
+  }
+
+  .cancelButton,
+  .submitButton {
+    width: 100%;
+  }
+
+  .photoPreviewContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .uploadPhotoBtn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .roomActions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .viewButton, .editButton, .deleteButton {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.25rem;
+    min-width: 0;
+  }
+}
