@@ -8,7 +8,6 @@ import axios from "axios";
 import RoomPost from "../roomPost/RoomPost";
 import { AuthContext } from "../../components/context/AuthContext";
 
-
 const Profile = () => {
   const { id } = useParams();
   const { data: user } = useFetch(`/users/${id}`);
@@ -133,8 +132,6 @@ const Profile = () => {
       if (result) {
         // Success! Close the modal
         closeModal();
-        // You might want to refresh the user data
-        // If your useFetch hook doesn't auto-refresh, you might need another approach
       }
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
@@ -160,17 +157,21 @@ const Profile = () => {
           </span>
 
           <div className="userInfo">
-            <h2>Username: {user?.username}</h2>
+            <h2>Fullname: {user?.fullName || "Not provided"}</h2>
+            <span>
+              <span className="title">Username:</span> {user?.username}
+            </span>{" "}
+            <br />
+            <span>
+              <span className="title">Lives in:</span> {user?.city || "Not provided"}
+            </span>{" "}
+            <br />
+            <span>
+              <span className="title">Phone:</span> {user?.phone || "Not provided"}
+            </span>{" "}
+            <br />
             <span>
               <span className="title">E-mail:</span> {user?.email}
-            </span>{" "}
-            <br />
-            <span>
-              <span className="title">Phone:</span> {user?.phone}
-            </span>{" "}
-            <br />
-            <span>
-              <span className="title">Lives in:</span> {user?.city}
             </span>
           </div>
         </div>
@@ -204,6 +205,16 @@ const Profile = () => {
                   onChange={handleImageChange}
                 />
                 <p className="photoUploadText">Click to upload a new photo</p>
+              </div>
+
+              <div className="formGroup">
+                <label>Fullname</label>
+                <input
+                  type="text"
+                  name="fullName"
+                  value={editedUser.fullName || ""}
+                  onChange={handleChange}
+                />
               </div>
 
               <div className="formGroup">

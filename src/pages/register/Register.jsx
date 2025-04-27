@@ -5,12 +5,13 @@ import { useNavigate, Link } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
+    fullName: "",
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
     city: "",
-    country: "Bangladesh", // Default country set to Bangladesh
+    country: "Bangladesh",
     phone: "",
   });
 
@@ -22,7 +23,6 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  // Validate form whenever formData changes
   useEffect(() => {
     if (Object.keys(touchedFields).length > 0) {
       const validationErrors = validateForm(true);
@@ -32,24 +32,13 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-
     setFormData((prev) => ({ ...prev, [id]: value }));
-
-    // Mark this field as touched
-    setTouchedFields((prev) => ({
-      ...prev,
-      [id]: true,
-    }));
+    setTouchedFields((prev) => ({ ...prev, [id]: true }));
   };
 
   const handleBlur = (e) => {
     const { id } = e.target;
-
-    // Mark this field as touched
-    setTouchedFields((prev) => ({
-      ...prev,
-      [id]: true,
-    }));
+    setTouchedFields((prev) => ({ ...prev, [id]: true }));
   };
 
   const validateForm = (partialValidation = false) => {
@@ -57,7 +46,14 @@ const Register = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\d{10,15}$/;
 
-    // Only validate touched fields if partialValidation is true
+    if (!partialValidation || touchedFields.fullName) {
+      if (!formData.fullName.trim()) {
+        errors.fullName = "Full name is required";
+      } else if (formData.fullName.length < 3) {
+        errors.fullName = "Full name must be at least 3 characters";
+      }
+    }
+
     if (!partialValidation || touchedFields.username) {
       if (!formData.username.trim()) {
         errors.username = "Username is required";
@@ -106,7 +102,6 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Mark all fields as touched for full validation
     const allFieldsTouched = Object.keys(formData).reduce((acc, field) => {
       acc[field] = true;
       return acc;
@@ -114,11 +109,9 @@ const Register = () => {
 
     setTouchedFields(allFieldsTouched);
 
-    // Run full validation
     const validationErrors = validateForm();
     setFormErrors(validationErrors);
 
-    // If there are errors, don't submit
     if (Object.keys(validationErrors).length > 0) {
       return;
     }
@@ -126,15 +119,11 @@ const Register = () => {
     setLoading(true);
     setError(null);
 
-    // Remove confirmPassword from the data sent to the server
     const { confirmPassword, ...dataToSubmit } = formData;
 
     try {
       await axios.post("http://localhost:4000/api/auth/register", dataToSubmit);
-
       setSuccessMessage("Registration successful! Redirecting to login...");
-
-      // Redirect to login page after successful registration
       setTimeout(() => {
         navigate("/login");
       }, 2000);
@@ -154,6 +143,28 @@ const Register = () => {
           alt="Tour Stay Logo"
         />
         <form onSubmit={handleSubmit}>
+          <div className="formGroup">
+            <label htmlFor="fullName">
+              Full Name <span className="required">*</span>
+            </label>
+            <input
+              type="text"
+              id="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className={`rInput ${
+                touchedFields.fullName && formErrors.fullName
+                  ? "inputError"
+                  : ""
+              }`}
+              placeholder="Enter your full name"
+            />
+            {touchedFields.fullName && formErrors.fullName && (
+              <span className="errorText">{formErrors.fullName}</span>
+            )}
+          </div>
+
           <div className="formGroup">
             <label htmlFor="username">
               Username <span className="required">*</span>

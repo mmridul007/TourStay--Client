@@ -99,6 +99,20 @@
   font-weight: bold;
 }
 
+.login .lContainer .registerLink {
+  margin-top: 16px;
+  color: #374151;
+}
+
+.login .lContainer .registerLink a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login .lContainer .registerLink a:hover {
+  text-decoration: underline;
+}
 @media (max-width: 480px) {
   .login {
     padding: 16px;

@@ -54,8 +54,12 @@ const HotelConfirmation = ({
       setIsPromoValid(false);
       setFinalAmount(calculatedAdvance);
     } else {
+      // First apply promo discount
       const discountedTotal = Math.round(totalAmount * (1 - discount / 100));
-      setFinalAmount(discountedTotal);
+      // Then add 5% platform charge
+      const platformCharge = Math.round(discountedTotal * 0.05);
+      const finalPayableAmount = discountedTotal + platformCharge;
+      setFinalAmount(finalPayableAmount);
     }
   }, [paymentType, totalAmount, discount]);
 
@@ -368,11 +372,16 @@ const HotelConfirmation = ({
             </div>
           )}
 
+          <div className="price-row platform-charge">
+            <span>Platform Charge (5%)</span>
+            <span>
+              +BDT {Math.round(totalAmount * (1 - discount / 100) * 0.05)}
+            </span>
+          </div>
+
           <div className="price-row total">
             <span>Total Amount</span>
-            <span>
-              BDT {totalAmount - Math.round((totalAmount * discount) / 100)}
-            </span>
+            <span>BDT {finalAmount}</span>
           </div>
         </div>
 

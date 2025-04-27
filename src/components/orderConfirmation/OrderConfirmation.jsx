@@ -35,7 +35,7 @@ const OrderConfirmation = ({
   const daysDifference =
     Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) || 1;
   const originalPrice = daysDifference * roomData.cheapestPrice;
-  const platformFee = Math.round(originalPrice * 0.05); // 5% platform fee
+  const platformFee = 30; // Fixed platform fee 30 BDT
   const discountAmount = (originalPrice * discount) / 100;
   const totalPrice = originalPrice + platformFee - discountAmount;
 
@@ -353,7 +353,7 @@ const OrderConfirmation = ({
           </div>
 
           <div className="price-row platform-fee">
-            <span>Platform Fee (5%)</span>
+            <span>Platform Fee</span>
             <span>BDT {platformFee}</span>
           </div>
 

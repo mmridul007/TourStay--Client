@@ -2,17 +2,17 @@ import { useContext, useState, useEffect } from "react";
 import "./login.css";
 import { AuthContext } from "../../components/context/AuthContext";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
-    username: "",
+    identifier: "",
     password: "",
   });
   const [formError, setFormError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [returnUrl, setReturnUrl] = useState("/");
-  
+
   const navigate = useNavigate();
   const location = useLocation();
   const { loading, error, dispatch } = useContext(AuthContext);
@@ -20,7 +20,8 @@ const Login = () => {
   useEffect(() => {
     // Check if there's a returnUrl in the state or query parameters
     const params = new URLSearchParams(location.search);
-    const returnPath = location.state?.returnUrl || params.get("returnUrl") || "/";
+    const returnPath =
+      location.state?.returnUrl || params.get("returnUrl") || "/";
     setReturnUrl(returnPath);
   }, [location]);
 
@@ -33,8 +34,8 @@ const Login = () => {
     setFormError("");
     setSuccessMessage("");
 
-    // Validation
-    if (!credentials.username || !credentials.password) {
+    // Corrected validation
+    if (!credentials.identifier || !credentials.password) {
       setFormError("Username and password are required.");
       return;
     }
@@ -52,8 +53,7 @@ const Login = () => {
 
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
       setSuccessMessage(`Login successful! Redirecting...`);
-      
-      // Redirect after successful login to the page they were coming from
+
       setTimeout(() => {
         navigate(returnUrl);
       }, 1500);
@@ -62,7 +62,7 @@ const Login = () => {
         type: "LOGIN_FAILURE",
         payload: err.response?.data || "Something went wrong",
       });
-      setSuccessMessage(""); // Clear success message on error
+      setSuccessMessage("");
     }
   };
 
@@ -74,15 +74,16 @@ const Login = () => {
           src="https://res.cloudinary.com/dkkdfz2n0/image/upload/v1739601631/Screenshot_2025-02-15_at_12.35.55_PM_opxr4x.png"
           alt="Tour Stay Logo"
         />
-        <label>Username </label>
+        <label>Email or Username</label>
         <input
           type="text"
-          name="username"
+          name="identifier"
           onChange={handleChange}
-          id="username"
-          placeholder="Username"
+          id="identifier"
+          placeholder="Username or Email"
           className="lInput"
         />
+
         <label>Password </label>
         <input
           type="password"
@@ -95,14 +96,15 @@ const Login = () => {
         <button disabled={loading} className="lButton" onClick={handleClick}>
           {loading ? "Logging in..." : "Login"}
         </button>
+        <div className="registerLink">
+          Don't have an account? <Link to="/register">Create one</Link>
+        </div>
         {formError && <span className="formError">{formError}</span>}
         {error && <span className="errorMessage">{error.message}</span>}
         {successMessage && (
           <span className="successMessage">{successMessage}</span>
         )}
-        {returnUrl !== "/" && (
-          <p className="returnInfo"></p>
-        )}
+        {returnUrl !== "/" && <p className="returnInfo"></p>}
       </div>
     </div>
   );
