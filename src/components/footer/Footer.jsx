@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebook,
@@ -7,9 +7,17 @@ import {
   faLinkedin,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
+import {
+  faEnvelope,
+  faLocationDot,
+  faPhone,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
 import "./footer.css";
 
 const Footer = () => {
+  const [hoverIcon, setHoverIcon] = useState(null);
+
   return (
     <footer className="footer">
       <div className="footer-container">
@@ -24,73 +32,50 @@ const Footer = () => {
           <div className="footer-description">
             <p>
               Your premier destination for comfortable and affordable
-              accommodations nationalwide.
+              accommodations nationwide.
             </p>
-            <p>© 2025 Tour Stay. All rights reserved.</p>
+            
+            <p className="copyright">© 2025 Tour Stay. All rights reserved.</p>
           </div>
         </div>
 
         {/* Information and Social Media Links Section */}
         <div className="footer-links">
-          {/* Quick Links */}
-          <div className="footer-section">
-            <h3>Quick Links</h3>
-            <ul>
-              <li>
-                <a href="/">Home</a>
-              </li>
-              <li>
-                <a href="/about">About Us</a>
-              </li>
-              <li>
-                <a href="/hotels">Hotels</a>
-              </li>
-              <li>
-                <a href="/quickrooms">Quick Stay</a>
-              </li>
-              <li>
-                <a href="/contact">Contact Us</a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div className="footer-section">
-            <h3>Support</h3>
-            <ul>
-              <li>
-                <a href="/faq">FAQ</a>
-              </li>
-              <li>
-                <a href="/terms">Terms & Conditions</a>
-              </li>
-              <li>
-                <a href="/privacy">Privacy Policy</a>
-              </li>
-              <li>
-                <a href="/help">Help Center</a>
-              </li>
-            </ul>
-          </div>
-
           {/* Contact Info */}
-          <div className="footer-section">
+          <div className="footer-section contact-section">
             <h3>Contact Us</h3>
             <ul className="contact-info">
-              <li>DSC, Ashulia,Dhaka , Bangladesh</li>
-              <li>info@tourstay.com</li>
-              <li>+8801719877736</li>
+              <li>
+                <FontAwesomeIcon
+                  icon={faLocationDot}
+                  className="contact-icon"
+                />
+                <span>DSC, Ashulia, Dhaka, Bangladesh</span>
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faEnvelope} className="contact-icon" />
+                <a href="mailto:info@tourstay.com">info@tourstay.com</a>
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faPhone} className="contact-icon" />
+                <a href="tel:+8801719877736">+8801719877736</a>
+              </li>
             </ul>
           </div>
+          
 
           {/* Social Media Links */}
-          <div className="footer-section">
+          <div className="footer-section social-section">
+            
             <h3>Connect With Us</h3>
             <div className="social-icons">
               <a
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                onMouseEnter={() => setHoverIcon("facebook")}
+                onMouseLeave={() => setHoverIcon(null)}
+                className={hoverIcon === "facebook" ? "icon-hover" : ""}
               >
                 <FontAwesomeIcon icon={faFacebook} />
               </a>
@@ -98,6 +83,9 @@ const Footer = () => {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                onMouseEnter={() => setHoverIcon("twitter")}
+                onMouseLeave={() => setHoverIcon(null)}
+                className={hoverIcon === "twitter" ? "icon-hover" : ""}
               >
                 <FontAwesomeIcon icon={faTwitter} />
               </a>
@@ -105,6 +93,9 @@ const Footer = () => {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                onMouseEnter={() => setHoverIcon("instagram")}
+                onMouseLeave={() => setHoverIcon(null)}
+                className={hoverIcon === "instagram" ? "icon-hover" : ""}
               >
                 <FontAwesomeIcon icon={faInstagram} />
               </a>
@@ -112,6 +103,9 @@ const Footer = () => {
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                onMouseEnter={() => setHoverIcon("linkedin")}
+                onMouseLeave={() => setHoverIcon(null)}
+                className={hoverIcon === "linkedin" ? "icon-hover" : ""}
               >
                 <FontAwesomeIcon icon={faLinkedin} />
               </a>
@@ -119,10 +113,24 @@ const Footer = () => {
                 href="https://youtube.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                onMouseEnter={() => setHoverIcon("youtube")}
+                onMouseLeave={() => setHoverIcon(null)}
+                className={hoverIcon === "youtube" ? "icon-hover" : ""}
               >
                 <FontAwesomeIcon icon={faYoutube} />
               </a>
+
+
             </div>
+
+            <button
+              className="refund-policy-btn"
+              onClick={() => (window.location.href = "/policy")}
+            >
+              Cancel & Refund Policy{" "}
+              <FontAwesomeIcon icon={faArrowRight} className="btn-icon" />
+            </button>
+            
           </div>
         </div>
       </div>

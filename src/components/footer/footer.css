@@ -3,11 +3,11 @@
   color: #fff;
   padding: 40px 20px;
   position: relative;
-  max-width: 100%;
+  width: 100%;
 }
 
 .footer-container {
-  max-width: 76%;
+  max-width: 1024px;
   margin: 0 auto;
   display: flex;
   flex-direction: row;
@@ -24,7 +24,12 @@
 }
 
 .footer-logo {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+.footer-logo:hover {
+  transform: scale(1.02);
 }
 
 .footer-logo img {
@@ -36,6 +41,43 @@
   font-size: 14px;
   line-height: 1.5;
   color: #ccc;
+}
+
+.copyright {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #999;
+}
+
+/* Refund Policy Button */
+.refund-policy-btn {
+  background-color: #0071c2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  margin-top: 15px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.refund-policy-btn:hover {
+  background-color: #005999;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.refund-policy-btn .btn-icon {
+  transition: transform 0.3s ease;
+}
+
+.refund-policy-btn:hover .btn-icon {
+  transform: translateX(3px);
 }
 
 /* Links and Social Media Section */
@@ -55,8 +97,24 @@
 .footer-section h3 {
   color: #fff;
   font-size: 18px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   font-weight: 600;
+  position: relative;
+}
+
+.footer-section h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 40px;
+  height: 2px;
+  background-color: #0071c2;
+  transition: width 0.3s ease;
+}
+
+.footer-section:hover h3::after {
+  width: 60px;
 }
 
 .footer-section ul {
@@ -66,7 +124,10 @@
 }
 
 .footer-section ul li {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .footer-section ul li a {
@@ -82,29 +143,58 @@
 /* Contact Information */
 .contact-info li {
   color: #ccc;
-  margin-bottom: 10px;
+}
+
+.contact-icon {
+  color: #0071c2;
+  width: 18px;
 }
 
 /* Social Icons */
+.social-section {
+  display: flex;
+  flex-direction: column;
+}
+
 .social-icons {
   display: flex;
   gap: 15px;
+  margin-bottom: 20px;
 }
 
 .social-icons a {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #4b4b4b;
   color: #fff;
-  font-size: 20px;
-  transition: color 0.3s ease, transform 0.2s ease;
+  font-size: 18px;
+  transition: all 0.3s ease;
 }
 
-.social-icons a:hover {
-  color: #0071c2;
+.social-icons a:hover,
+.social-icons a.icon-hover {
+  background-color: #0071c2;
   transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Responsive Design */
 @media (max-width: 992px) {
+  .footer-container {
+    padding: 0 20px;
+  }
+
+  .footer-company {
+    padding-right: 0;
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 768px) {
   .footer-container {
     flex-direction: column;
   }
@@ -112,7 +202,6 @@
   .footer-company {
     text-align: center;
     padding-right: 0;
-    margin-bottom: 40px;
   }
 
   .footer-logo {
@@ -120,28 +209,41 @@
     justify-content: center;
   }
 
+  .footer-section h3::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .refund-policy-btn {
+    margin: 15px auto;
+  }
+
   .footer-links {
-    justify-content: space-around;
+    width: 100%;
   }
 
   .footer-section {
-    min-width: 40%;
+    width: 100%;
     text-align: center;
+    padding-right: 0;
+  }
+
+  .contact-info li {
+    justify-content: center;
+  }
+
+  .social-icons {
+    justify-content: center;
   }
 }
 
 @media (max-width: 576px) {
-  .footer-links {
-    flex-direction: column;
-    align-items: center;
-  }
-
   .footer-section {
-    min-width: 80%;
-    text-align: center;
+    min-width: 100%;
   }
 
   .social-icons {
+    flex-wrap: wrap;
     justify-content: center;
   }
 }
