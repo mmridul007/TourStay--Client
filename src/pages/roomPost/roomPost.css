@@ -7,7 +7,9 @@
 }
 
 .containerHeader {
-  padding: 0 20px;
+  padding: 20px;
+  font-style: italic;
+
 }
 
 .itemTitle {

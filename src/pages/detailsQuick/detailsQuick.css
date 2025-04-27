@@ -2,7 +2,7 @@
   width: 80%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -496,6 +496,24 @@
   text-align: center;
 }
 
+.loadingSpinner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  gap: 20px;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border-left-color: #0071c2;
+  animation: spin 1s linear infinite;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .details-container {
@@ -514,7 +532,6 @@
   .main-content {
     order: 2;
   }
-  
 
   .booking-sidebar {
     order: 1;

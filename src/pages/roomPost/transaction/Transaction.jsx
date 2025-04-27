@@ -10,7 +10,6 @@ const Transaction = ({ id }) => {
   const [error, setError] = useState(null);
   const [showSetupModal, setShowSetupModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
-  const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [showCustomerModal, setShowCustomerModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [withdrawMethod, setWithdrawMethod] = useState("");
@@ -22,7 +21,7 @@ const Transaction = ({ id }) => {
   const [currentOrderPage, setCurrentOrderPage] = useState(1);
   const [orderDetails, setOrderDetails] = useState({});
 
-  const historyPerPage = 10;
+  const historyPerPage = 5; // Changed from 10 to 5
   const ordersPerPage = 8;
   const platformFeePercentage = 7;
   const platformFeePerOrder = 30; // BDT subtracted from each order (hidden from user)
@@ -66,7 +65,11 @@ const Transaction = ({ id }) => {
   // Fetch withdrawal history (from user data)
   useEffect(() => {
     if (user && user.withdrawHistory) {
-      setWithdrawalHistory(user.withdrawHistory);
+      // Sort withdrawal history from newest to oldest
+      const sortedHistory = [...user.withdrawHistory].sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+      setWithdrawalHistory(sortedHistory);
     }
   }, [user]);
 
@@ -159,9 +162,10 @@ const Transaction = ({ id }) => {
       );
 
       setUser(response.data);
+      // Add the new withdrawal to the beginning of the history array (newest first)
       setWithdrawalHistory([
-        ...withdrawalHistory,
         { amount: netAmount, date: new Date() },
+        ...withdrawalHistory,
       ]);
       setShowWithdrawModal(false);
       setWithdrawAmount(0);
@@ -209,7 +213,7 @@ const Transaction = ({ id }) => {
 
   return (
     <div className="transaction-container">
-      <h2>Transactions Section {id}</h2>
+      <h2 className="title">Account Statements</h2>
 
       {/* Balance Information */}
       <div className="balance-section">
@@ -247,35 +251,58 @@ const Transaction = ({ id }) => {
       <div className="history-section">
         <div className="section-header">
           <h3>Withdrawal History</h3>
-          <button
-            className="view-all-btn"
-            onClick={() => setShowHistoryModal(true)}
-          >
-            View All
-          </button>
         </div>
         <div className="history-preview">
           {withdrawalHistory.length > 0 ? (
-            <div className="table-responsive">
-              <table className="history-table">
-                <thead>
-                  <tr>
-                    <th>Amount</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {withdrawalHistory.slice(0, 3).map((withdrawal, index) => (
-                    <tr key={index}>
-                      <td>{withdrawal.amount.toFixed(2)} BDT</td>
-                      <td>{formatDate(withdrawal.date)}</td>
-                      <td>{user.withdrawalStatus || "completed"}</td>
+            <>
+              <div className="table-responsive">
+                <table className="history-table">
+                  <thead>
+                    <tr>
+                      <th>Amount</th>
+                      <th>Date</th>
+                      <th>Status</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {currentWithdrawalHistory.map((withdrawal, index) => (
+                      <tr key={index}>
+                        <td>{withdrawal.amount.toFixed(2)} BDT</td>
+                        <td>{formatDate(withdrawal.date)}</td>
+                        <td>{user.withdrawalStatus || "completed"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Withdrawal History Pagination */}
+              {totalHistoryPages > 1 && (
+                <div className="pagination">
+                  <button
+                    onClick={() =>
+                      setCurrentHistoryPage((prev) => Math.max(prev - 1, 1))
+                    }
+                    disabled={currentHistoryPage === 1}
+                  >
+                    Previous
+                  </button>
+                  <span>
+                    {currentHistoryPage} of {totalHistoryPages}
+                  </span>
+                  <button
+                    onClick={() =>
+                      setCurrentHistoryPage((prev) =>
+                        Math.min(prev + 1, totalHistoryPages)
+                      )
+                    }
+                    disabled={currentHistoryPage === totalHistoryPages}
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+            </>
           ) : (
             <p className="no-data">No withdrawal history available</p>
           )}
@@ -368,6 +395,13 @@ const Transaction = ({ id }) => {
           <div className="modal">
             <div className="modal-header">
               <h3>Set Up Withdrawal Method</h3>
+              <button
+                type="button"
+                className="close-btn"
+                onClick={() => setShowSetupModal(false)}
+              >
+                Close
+              </button>
             </div>
             <form onSubmit={handleSetupSubmit}>
               <div className="form-group">
@@ -397,13 +431,6 @@ const Transaction = ({ id }) => {
                 <button type="submit" className="submit-btn">
                   Save
                 </button>
-                <button
-                  type="button"
-                  className="close-btn"
-                  onClick={() => setShowSetupModal(false)}
-                >
-                  Close
-                </button>
               </div>
             </form>
           </div>
@@ -416,6 +443,13 @@ const Transaction = ({ id }) => {
           <div className="modal">
             <div className="modal-header">
               <h3>Withdraw Funds</h3>
+              <button
+                type="button"
+                className="close-btn"
+                onClick={() => setShowWithdrawModal(false)}
+              >
+                Close
+              </button>
             </div>
             <form onSubmit={handleWithdrawSubmit}>
               <div className="withdrawal-info">
@@ -475,91 +509,8 @@ const Transaction = ({ id }) => {
                 >
                   Withdraw
                 </button>
-                <button
-                  type="button"
-                  className="close-btn"
-                  onClick={() => setShowWithdrawModal(false)}
-                >
-                  Close
-                </button>
               </div>
             </form>
-          </div>
-        </div>
-      )}
-
-      {/* Withdrawal History Modal */}
-      {showHistoryModal && (
-        <div className="modal-overlay">
-          <div className="modal large">
-            <div className="modal-header">
-              <h3>Withdrawal History</h3>
-            </div>
-            <div className="modal-content">
-              {currentWithdrawalHistory.length > 0 ? (
-                <>
-                  <div className="table-responsive">
-                    <table className="history-table full-width">
-                      <thead>
-                        <tr>
-                          <th>S.L</th>
-                          <th>Amount</th>
-                          <th>Date</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {currentWithdrawalHistory.map((withdrawal, index) => (
-                          <tr key={index}>
-                            <td>{indexOfFirstHistory + index + 1}</td>
-                            <td>{withdrawal.amount.toFixed(2)} BDT</td>
-                            <td>{formatDate(withdrawal.date)}</td>
-                            <td>{user.withdrawalStatus || "completed"}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  {/* History Pagination */}
-                  {totalHistoryPages > 1 && (
-                    <div className="pagination">
-                      <button
-                        onClick={() =>
-                          setCurrentHistoryPage((prev) => Math.max(prev - 1, 1))
-                        }
-                        disabled={currentHistoryPage === 1}
-                      >
-                        Previous
-                      </button>
-                      <span>
-                        {currentHistoryPage} of {totalHistoryPages}
-                      </span>
-                      <button
-                        onClick={() =>
-                          setCurrentHistoryPage((prev) =>
-                            Math.min(prev + 1, totalHistoryPages)
-                          )
-                        }
-                        disabled={currentHistoryPage === totalHistoryPages}
-                      >
-                        Next
-                      </button>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <p className="no-data">No withdrawal history available</p>
-              )}
-              <div className="modal-actions">
-                <button
-                  className="close-btn"
-                  onClick={() => setShowHistoryModal(false)}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       )}
@@ -570,6 +521,12 @@ const Transaction = ({ id }) => {
           <div className="modal">
             <div className="modal-header">
               <h3>Customer Information</h3>
+              <button
+                className="close-btn"
+                onClick={() => setShowCustomerModal(false)}
+              >
+                Close
+              </button>
             </div>
             <div className="customer-info">
               <div className="info-row">
@@ -607,14 +564,6 @@ const Transaction = ({ id }) => {
                 <span className={`status ${selectedOrder.status}`}>
                   {selectedOrder.status}
                 </span>
-              </div>
-              <div className="modal-actions">
-                <button
-                  className="close-btn"
-                  onClick={() => setShowCustomerModal(false)}
-                >
-                  Close
-                </button>
               </div>
             </div>
           </div>

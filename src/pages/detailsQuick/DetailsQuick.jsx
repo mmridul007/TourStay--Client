@@ -443,7 +443,13 @@ const DetailsQuick = () => {
     );
   };
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading)
+    return (
+      <div className="loadingSpinner">
+        <div className="spinner"></div>
+        <p>Loading Please Wait</p>
+      </div>
+    );
   if (error) return <div className="error">Error: {error.message}</div>;
   if (!data) return <div className="not-found">Room not found</div>;
 

@@ -362,9 +362,26 @@ const Hotel = () => {
                     ).toLocaleString()}
                   </span>
                 </div>
-                <button className="bookingButton" onClick={handleClick}>
+                <button
+                  className="bookingButton"
+                  onClick={handleClick}
+                  disabled={!dates || dates.length === 0}
+                  style={{
+                    backgroundColor:
+                      !dates || dates.length === 0 ? "#ccc" : "#0071c2",
+                    cursor:
+                      !dates || dates.length === 0 ? "not-allowed" : "pointer",
+                  }}
+                >
                   Reserve or Book Now!
                 </button>
+                {(!dates || dates.length === 0) && (
+                  <p
+                    style={{ color: "red", marginTop: "8px", fontSize: "14px" }}
+                  >
+                    Without selecting dates, you can't reserve.
+                  </p>
+                )}
               </div>
             </div>
           </div>

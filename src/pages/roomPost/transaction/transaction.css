@@ -1,5 +1,8 @@
 /* TransactionStyles.css */
-
+.title {
+  margin-bottom: 10px;
+  color: black;
+}
 .transaction-container {
   padding: 15px;
   font-family: Arial, sans-serif;
@@ -106,21 +109,6 @@
   gap: 10px;
 }
 
-.view-all-btn {
-  background-color: transparent;
-  color: #3498db;
-  border: 1px solid #3498db;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.view-all-btn:hover {
-  background-color: #3498db;
-  color: white;
-}
-
 /* Tables */
 .table-responsive {
   overflow-x: auto;
@@ -210,11 +198,12 @@
   align-items: center;
   padding: 15px 20px;
   border-bottom: 1px solid #eee;
+  background-color: #f8f9fa;
 }
 
 .close-btn {
-  background-color: #e74c3c;
-  color: white;
+  background-color: #e7dbd9;
+  color: rgb(239, 16, 16);
   border: none;
   padding: 8px 15px;
   border-radius: 4px;
@@ -223,7 +212,7 @@
 }
 
 .close-btn:hover {
-  background-color: #c0392b;
+  background-color: #ede6e6;
 }
 
 .modal-content {
