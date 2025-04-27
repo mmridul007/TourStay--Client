@@ -15,6 +15,7 @@ import Orders from "./pages/orders/Orders";
 import HotelPaymentSuccess from "./pages/paymentSuccess/HotelPaymentSuccess";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Policy from "./pages/policy/Policy";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         />
         <Route path="/payment-failed" element={<PaymentFailed />} />
         <Route path="/orderConfirmation" element={<OrderConfirmation />} />
+        <Route path="/policy" element={<Policy/>} />
       </Routes>
     </BrowserRouter>
   );

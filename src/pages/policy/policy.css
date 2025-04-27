@@ -1,0 +1,122 @@
+.policy-container {
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
+  color: #333333;
+}
+
+.policy-header {
+  margin-bottom: 30px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 20px;
+}
+
+.policy-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0066cc;
+  margin-bottom: 10px;
+}
+
+.last-updated {
+  font-size: 14px;
+  color: #888888;
+}
+
+.policy-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #0066cc;
+  margin-bottom: 15px;
+}
+
+.section-text {
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin: 25px 0;
+}
+
+.policy-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.policy-table th {
+  background-color: #f0f6ff;
+  color: #0066cc;
+  font-weight: 600;
+  text-align: left;
+  padding: 15px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.policy-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.policy-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.policy-table tr:hover {
+  background-color: #f0f6ff;
+}
+
+.refund-steps {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.refund-steps li {
+  margin-bottom: 10px;
+}
+
+.policy-footer {
+  margin-top: 40px;
+  border-top: 2px solid #f0f0f0;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.contact-info {
+  font-weight: 600;
+  margin-top: 10px;
+  color: #0066cc;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .policy-container {
+    padding: 20px;
+  }
+
+  .policy-title {
+    font-size: 26px;
+  }
+
+  .section-title {
+    font-size: 20px;
+  }
+
+  .policy-table th,
+  .policy-table td {
+    padding: 10px;
+  }
+}
