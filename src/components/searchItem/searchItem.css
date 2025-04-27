@@ -133,6 +133,22 @@
   background-color: #005fa3;
 }
 
+.siAmenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.siAmenity {
+  font-size: 11px;
+  background-color: #f5f5f5;
+  color: #444;
+  padding: 3px 8px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
 /* Responsive Design */
 @media screen and (max-width: 768px) {
   .searchItem {
@@ -157,6 +173,15 @@
     align-items: flex-start;
     gap: 5px;
   }
+}
+
+.siAmenities {
+  margin-top: 8px;
+}
+
+/* Ensure the rating button is visible on mobile */
+.siRating > button {
+  margin-left: 10px;
 }
 
 @media screen and (max-width: 480px) {
