@@ -349,7 +349,21 @@ import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import OrderConfirmation from "../../components/orderConfirmation/OrderConfirmation";
 import { AuthContext } from "../../components/context/AuthContext";
-import { colors, Rating } from "@mui/material";
+import { Rating } from "@mui/material";
+import {
+  LocationOn,
+  Wifi,
+  LocalParking,
+  Kitchen,
+  KitchenOutlined,
+  Microwave,
+  Restaurant,
+  LocalGasStation,
+  SmokingRooms,
+  Pets,
+  PeopleAlt,
+  Star,
+} from "@mui/icons-material";
 
 const DetailsQuick = () => {
   const { id } = useParams();
@@ -522,10 +536,36 @@ const DetailsQuick = () => {
       <Navbar />
       <div className="details-container">
         <div className="quick-room-details">
-          <h1 className="room-title">{data.title}</h1>
-          <p className="room-location">
-            {data.address}, {data.city}
-          </p>
+          <div className="title-rating-container">
+            <div className="title-section">
+              <h1 className="room-title">{data.title}</h1>
+              <p className="room-location">
+                <LocationOn
+                  style={{
+                    fontSize: 16,
+                    verticalAlign: "middle",
+                    marginRight: "5px",
+                  }}
+                />
+                {data.address}, {data.city}
+              </p>
+            </div>
+            <div className="rating-section">
+              <div className="rating-display">
+                <Star style={{ color: "#FFC107", marginRight: "5px" }} />
+                <span className="rating-number">{averageRating}</span>
+                <Rating
+                  value={parseFloat(averageRating)}
+                  precision={0.5}
+                  readOnly
+                  size="small"
+                />
+                <span className="total-reviews">
+                  ({reviews.length} reviews)
+                </span>
+              </div>
+            </div>
+          </div>
 
           {/* Photo Gallery */}
           <div className="photo-gallery">
@@ -567,19 +607,48 @@ const DetailsQuick = () => {
 
                 <h2>Amenities</h2>
                 <div className="amenities-grid">
-                  {data.isWifiAvailable && <div className="amenity">WiFi</div>}
+                  {data.isWifiAvailable && (
+                    <div className="amenity">
+                      <Wifi style={{ marginRight: "5px" }} />
+                      WiFi
+                    </div>
+                  )}
                   {data.isParkingAvailable && (
-                    <div className="amenity">Parking</div>
+                    <div className="amenity">
+                      <LocalParking style={{ marginRight: "5px" }} />
+                      Parking
+                    </div>
                   )}
-                  {data.kitchen && <div className="amenity">Kitchen</div>}
+                  {data.kitchen && (
+                    <div className="amenity">
+                      <Kitchen style={{ marginRight: "5px" }} />
+                      Kitchen
+                    </div>
+                  )}
                   {data.refrigerator && (
-                    <div className="amenity">Refrigerator</div>
+                    <div className="amenity">
+                      <KitchenOutlined style={{ marginRight: "5px" }} />
+                      Refrigerator
+                    </div>
                   )}
-                  {data.oven && <div className="amenity">Oven</div>}
+                  {data.oven && (
+                    <div className="amenity">
+                      <Microwave style={{ marginRight: "5px" }} />
+                      Oven
+                    </div>
+                  )}
                   {data.diningRoom && (
-                    <div className="amenity">Dining Room</div>
+                    <div className="amenity">
+                      <Restaurant style={{ marginRight: "5px" }} />
+                      Dining Room
+                    </div>
                   )}
-                  {data.isGasAvailable && <div className="amenity">Gas</div>}
+                  {data.isGasAvailable && (
+                    <div className="amenity">
+                      <LocalGasStation style={{ marginRight: "5px" }} />
+                      Gas
+                    </div>
+                  )}
                 </div>
 
                 <h2>Room Details</h2>
@@ -669,18 +738,36 @@ const DetailsQuick = () => {
                 <h2>House Rules</h2>
                 <div className="house-rules">
                   <div className="rule">
-                    <span>Smoking Allowed:</span>
+                    <span>
+                      <SmokingRooms
+                        style={{ verticalAlign: "middle", marginRight: "5px" }}
+                      />
+                      Smoking Allowed:
+                    </span>
                     <span>{data.isSmokingAllowed ? "Yes" : "No"}</span>
                     {data.messageOfSmoking && <p>{data.messageOfSmoking}</p>}
                   </div>
                   <div className="rule">
-                    <span>Pets Allowed:</span>
+                    <span>
+                      <Pets
+                        style={{ verticalAlign: "middle", marginRight: "5px" }}
+                      />
+                      Pets Allowed:
+                    </span>
                     <span>{data.isPetAllowed ? "Yes" : "No"}</span>
                     {data.messageOfPet && <p>{data.messageOfPet}</p>}
                   </div>
                   {data.whichPeopleAreAllowed && (
                     <div className="rule">
-                      <span>Suitable for:</span>
+                      <span>
+                        <PeopleAlt
+                          style={{
+                            verticalAlign: "middle",
+                            marginRight: "5px",
+                          }}
+                        />
+                        Suitable for:
+                      </span>
                       <span>{data.whichPeopleAreAllowed}</span>
                     </div>
                   )}
