@@ -17,6 +17,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Policy from "./pages/policy/Policy";
 
+import "react-chatbot-kit/build/main.css";
+import ChatBot from "./components/ChatBot";
+
 function App() {
   return (
     <BrowserRouter>
@@ -39,8 +42,9 @@ function App() {
         />
         <Route path="/payment-failed" element={<PaymentFailed />} />
         <Route path="/orderConfirmation" element={<OrderConfirmation />} />
-        <Route path="/policy" element={<Policy/>} />
+        <Route path="/policy" element={<Policy />} />
       </Routes>
+      <ChatBot/>
     </BrowserRouter>
   );
 }

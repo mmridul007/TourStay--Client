@@ -60,16 +60,27 @@ const Hotel = () => {
 
   const { dates, options } = useContext(SearchContext);
 
-  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   function dayDifference(date1, date2) {
-    const timeDiff = Math.abs(date1.getTime() - date2.getTime());
-    const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
-    return diffDays;
+    if (!date1 || !date2) return 1; // Default to 1 day if dates are missing
+
+    try {
+      const d1 = new Date(date1);
+      const d2 = new Date(date2);
+      const timeDiff = Math.abs(d2.getTime() - d1.getTime());
+      return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    } catch (e) {
+      console.error("Date calculation error:", e);
+      return 1; // Fallback to 1 day
+    }
   }
 
-  const days = dates?.length
-    ? dayDifference(dates[0].endDate, dates[0].startDate)
-    : 1;
+  // Calculate days - handle both possible date formats
+  const days =
+    dates?.length >= 2
+      ? dayDifference(dates[0], dates[1])
+      : dates?.[0]?.startDate // Alternative format check
+      ? dayDifference(dates[0].startDate, dates[0].endDate)
+      : 1;
 
   const handleOpen = (i) => {
     setSlideNumber(i);

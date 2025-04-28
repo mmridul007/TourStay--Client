@@ -58,11 +58,15 @@ const SearchReducer = (state, action) => {
   switch (action.type) {
     case "NEW_SEARCH":
       return {
-        ...state,
-        ...action.payload, // Merge new search parameters
+        city: action.payload.city,
+        dates: action.payload.dates,
+        options: {
+          ...state.options, // Keep existing options
+          ...action.payload.options, // Merge new options
+        },
       };
     case "RESET_SEARCH":
-      return { ...INITIAL_STATE }; // Return a fresh copy of INITIAL_STATE
+      return { ...INITIAL_STATE };
     default:
       return state;
   }
