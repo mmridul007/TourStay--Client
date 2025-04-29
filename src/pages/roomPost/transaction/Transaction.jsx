@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { showConfirmToast } from "../../../components/confirmToast/ConfirmToast";
 import "./transaction.css";
 
 const Transaction = ({ id }) => {
@@ -21,7 +22,7 @@ const Transaction = ({ id }) => {
   const [currentOrderPage, setCurrentOrderPage] = useState(1);
   const [orderDetails, setOrderDetails] = useState({});
 
-  const historyPerPage = 5; // Changed from 10 to 5
+  const historyPerPage = 6; // Changed from 5 to 6 as requested
   const ordersPerPage = 8;
   const platformFeePercentage = 7;
   const platformFeePerOrder = 30; // BDT subtracted from each order (hidden from user)
@@ -34,6 +35,8 @@ const Transaction = ({ id }) => {
           `http://localhost:4000/api/users/${id}`
         );
         setUser(response.data);
+        setWithdrawMethod(response.data.withdrawMethod || "");
+        setWithdrawalNumber(response.data.withdrawalNumber || "");
         setLoading(false);
       } catch (err) {
         setError("Failed to load user data");
@@ -54,6 +57,7 @@ const Transaction = ({ id }) => {
         setOrderHistory(response.data);
       } catch (err) {
         console.error("Failed to load order history:", err);
+        toast.error("Failed to load order history");
       }
     };
 
@@ -101,28 +105,38 @@ const Transaction = ({ id }) => {
 
   const handleSetupSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axios.put(
-        `http://localhost:4000/api/users/${id}`,
-        {
-          withdrawMethod,
-          withdrawalNumber,
-        },
-        {
-          withCredentials: true,
+
+    // Confirmation before updating withdrawal method
+    showConfirmToast({
+      message: "Are you sure you want to update your withdrawal method?",
+      onConfirm: async () => {
+        try {
+          await axios.put(
+            `http://localhost:4000/api/users/${id}`,
+            {
+              withdrawMethod,
+              withdrawalNumber,
+            },
+            {
+              withCredentials: true,
+            }
+          );
+          // Update local user state
+          setUser({
+            ...user,
+            withdrawMethod,
+            withdrawalNumber,
+          });
+          setShowSetupModal(false);
+          toast.success("Withdrawal method set up successfully!");
+        } catch (err) {
+          toast.error("Failed to set up withdrawal method");
         }
-      );
-      // Update local user state
-      setUser({
-        ...user,
-        withdrawMethod,
-        withdrawalNumber,
-      });
-      setShowSetupModal(false);
-      toast.success("Withdrawal method set up successfully!");
-    } catch (err) {
-      toast.error("Failed to set up withdrawal method");
-    }
+      },
+      onCancel: () => {
+        toast.info("Setup canceled");
+      },
+    });
   };
 
   const handleWithdrawSubmit = async (e) => {
@@ -138,41 +152,58 @@ const Transaction = ({ id }) => {
       return;
     }
 
-    try {
-      // Calculate amount after platform fees
-      const feeAmount = (withdrawAmount * platformFeePercentage) / 100;
-      const netAmount = withdrawAmount - feeAmount;
+    // Confirmation before processing withdrawal
+    showConfirmToast({
+      message: `Are you sure you want to withdraw ${withdrawAmount.toFixed(
+        2
+      )} BDT?`,
+      onConfirm: async () => {
+        try {
+          // Calculate amount after platform fees
+          const feeAmount = (withdrawAmount * platformFeePercentage) / 100;
+          const netAmount = withdrawAmount - feeAmount;
 
-      // Update user balance and withdrawal history
-      const response = await axios.put(
-        `http://localhost:4000/api/users/${id}`,
-        {
-          balance: user.balance - withdrawAmount,
-          // totalWithdraw: user.totalWithdraw + netAmount,
-          withdrawalStatus: "pending",
-          withdrawalHoldAmount: netAmount,
-          withdrawHistory: [
-            ...user.withdrawHistory,
+          // Update user balance and withdrawal history
+          const response = await axios.put(
+            `http://localhost:4000/api/users/${id}`,
+            {
+              balance: user.balance - withdrawAmount,
+              // totalWithdraw: user.totalWithdraw + netAmount,
+              withdrawalStatus: "pending",
+              withdrawalHoldAmount: netAmount,
+              withdrawHistory: [
+                ...user.withdrawHistory,
+                { amount: netAmount, date: new Date() },
+              ],
+            },
+            {
+              withCredentials: true,
+            }
+          );
+
+          setUser(response.data);
+          // Add the new withdrawal to the beginning of the history array (newest first)
+          setWithdrawalHistory([
             { amount: netAmount, date: new Date() },
-          ],
-        },
-        {
-          withCredentials: true,
+            ...withdrawalHistory,
+          ]);
+          setShowWithdrawModal(false);
+          setWithdrawAmount(0);
+          toast.success("Withdrawal request submitted successfully!");
+        } catch (err) {
+          toast.error("Failed to process withdrawal request");
         }
-      );
+      },
+      onCancel: () => {
+        toast.info("Withdrawal canceled");
+      },
+    });
+  };
 
-      setUser(response.data);
-      // Add the new withdrawal to the beginning of the history array (newest first)
-      setWithdrawalHistory([
-        { amount: netAmount, date: new Date() },
-        ...withdrawalHistory,
-      ]);
-      setShowWithdrawModal(false);
-      setWithdrawAmount(0);
-      toast.success("Withdrawal request submitted successfully!");
-    } catch (err) {
-      toast.error("Failed to process withdrawal request");
-    }
+  // Helper function to handle withdraw amount changes
+  const handleWithdrawAmountChange = (value) => {
+    const newValue = Math.max(0, Math.min(value, user?.balance || 0));
+    setWithdrawAmount(newValue);
   };
 
   // Calculate available balance (visible to user)
@@ -269,7 +300,15 @@ const Transaction = ({ id }) => {
                       <tr key={index}>
                         <td>{withdrawal.amount.toFixed(2)} BDT</td>
                         <td>{formatDate(withdrawal.date)}</td>
-                        <td>{user.withdrawalStatus || "completed"}</td>
+                        <td>
+                          <span
+                            className={`status ${
+                              user.withdrawalStatus || "completed"
+                            }`}
+                          >
+                            {user.withdrawalStatus || "completed"}
+                          </span>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -338,7 +377,11 @@ const Transaction = ({ id }) => {
                         <td>{order.totalPrice} BDT</td>
                         <td>{formatDate(order.checkIn)}</td>
                         <td>{formatDate(order.checkOut)}</td>
-                        <td>{order.status}</td>
+                        <td>
+                          <span className={`status ${order.status}`}>
+                            {order.status}
+                          </span>
+                        </td>
                         <td>
                           <button
                             className="info-btn"
@@ -395,19 +438,12 @@ const Transaction = ({ id }) => {
           <div className="modal">
             <div className="modal-header">
               <h3>Set Up Withdrawal Method</h3>
-              <button
-                type="button"
-                className="close-btn"
-                onClick={() => setShowSetupModal(false)}
-              >
-                Close
-              </button>
             </div>
             <form onSubmit={handleSetupSubmit}>
               <div className="form-group">
                 <label>Withdrawal Method</label>
                 <select
-                  value={withdrawMethod || user.withdrawMethod || ""}
+                  value={withdrawMethod}
                   onChange={(e) => setWithdrawMethod(e.target.value)}
                   required
                 >
@@ -421,13 +457,20 @@ const Transaction = ({ id }) => {
                 <label>Account Number</label>
                 <input
                   type="text"
-                  value={withdrawalNumber || user.withdrawalNumber || ""}
+                  value={withdrawalNumber}
                   onChange={(e) => setWithdrawalNumber(e.target.value)}
                   placeholder="Enter your account number"
                   required
                 />
               </div>
               <div className="modal-actions">
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={() => setShowSetupModal(false)}
+                >
+                  Cancel
+                </button>
                 <button type="submit" className="submit-btn">
                   Save
                 </button>
@@ -443,13 +486,6 @@ const Transaction = ({ id }) => {
           <div className="modal">
             <div className="modal-header">
               <h3>Withdraw Funds</h3>
-              <button
-                type="button"
-                className="close-btn"
-                onClick={() => setShowWithdrawModal(false)}
-              >
-                Close
-              </button>
             </div>
             <form onSubmit={handleWithdrawSubmit}>
               <div className="withdrawal-info">
@@ -487,19 +523,51 @@ const Transaction = ({ id }) => {
               </div>
               <div className="form-group">
                 <label>Withdrawal Amount</label>
-                <input
-                  type="number"
-                  value={withdrawAmount}
-                  onChange={(e) =>
-                    setWithdrawAmount(parseFloat(e.target.value) || 0)
-                  }
-                  placeholder="Enter amount to withdraw"
-                  min="1"
-                  max={availableBalance}
-                  required
-                />
+                <div className="amount-input-container">
+                  <button
+                    type="button"
+                    className="amount-btn"
+                    onClick={() =>
+                      handleWithdrawAmountChange(withdrawAmount - 100)
+                    }
+                    disabled={withdrawAmount <= 0}
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    value={withdrawAmount}
+                    onChange={(e) =>
+                      handleWithdrawAmountChange(
+                        parseFloat(e.target.value) || 0
+                      )
+                    }
+                    placeholder="Enter amount to withdraw"
+                    min="0"
+                    max={availableBalance}
+                    required
+                    className="amount-input"
+                  />
+                  <button
+                    type="button"
+                    className="amount-btn"
+                    onClick={() =>
+                      handleWithdrawAmountChange(withdrawAmount + 100)
+                    }
+                    disabled={withdrawAmount >= availableBalance}
+                  >
+                    +
+                  </button>
+                </div>
               </div>
               <div className="modal-actions">
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={() => setShowWithdrawModal(false)}
+                >
+                  Cancel
+                </button>
                 <button
                   type="submit"
                   className="submit-btn"
@@ -521,12 +589,6 @@ const Transaction = ({ id }) => {
           <div className="modal">
             <div className="modal-header">
               <h3>Customer Information</h3>
-              <button
-                className="close-btn"
-                onClick={() => setShowCustomerModal(false)}
-              >
-                Close
-              </button>
             </div>
             <div className="customer-info">
               <div className="info-row">
@@ -564,6 +626,14 @@ const Transaction = ({ id }) => {
                 <span className={`status ${selectedOrder.status}`}>
                   {selectedOrder.status}
                 </span>
+              </div>
+              <div className="modal-actions">
+                <button
+                  className="close-btn1"
+                  onClick={() => setShowCustomerModal(false)}
+                >
+                  x
+                </button>
               </div>
             </div>
           </div>

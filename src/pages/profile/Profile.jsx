@@ -7,6 +7,8 @@ import "./profile.css";
 import axios from "axios";
 import RoomPost from "../roomPost/RoomPost";
 import { AuthContext } from "../../components/context/AuthContext";
+import {showConfirmToast} from "../../components/confirmToast/ConfirmToast"
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const { id } = useParams();
@@ -101,44 +103,55 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
 
-    try {
-      // First upload the image if there's a new one
-      let imageUrl = editedUser.img;
-      if (file) {
-        const uploadedUrl = await uploadImageToCloudinary();
-        if (uploadedUrl) {
-          imageUrl = uploadedUrl;
-        } else {
-          // If image upload failed but we have an error set already, return early
-          if (error) {
-            setLoading(false);
-            return;
+    // Show confirmation toast before proceeding
+    showConfirmToast({
+      message: "Are you sure you want to update your profile?",
+      onConfirm: async () => {
+        setLoading(true);
+        setError(null);
+
+        try {
+          // First upload the image if there's a new one
+          let imageUrl = editedUser.img;
+          if (file) {
+            const uploadedUrl = await uploadImageToCloudinary();
+            if (uploadedUrl) {
+              imageUrl = uploadedUrl;
+            } else {
+              // If image upload failed but we have an error set already, return early
+              if (error) {
+                setLoading(false);
+                return;
+              }
+            }
           }
+
+          // Prepare the updated user data
+          const updatedUserData = {
+            ...editedUser,
+            img: imageUrl,
+          };
+
+          // Update the user info in your API
+          const result = await updateUserInfo(updatedUserData);
+
+          if (result) {
+            toast.success("Profile updated successfully!");
+            closeModal();
+          }
+        } catch (err) {
+          setError("An unexpected error occurred. Please try again.");
+          console.error("Error in form submission:", err);
+          toast.error("Failed to update profile. Please try again.");
         }
-      }
 
-      // Prepare the updated user data
-      const updatedUserData = {
-        ...editedUser,
-        img: imageUrl,
-      };
-
-      // Update the user info in your API
-      const result = await updateUserInfo(updatedUserData);
-
-      if (result) {
-        // Success! Close the modal
-        closeModal();
-      }
-    } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
-      console.error("Error in form submission:", err);
-    }
-
-    setLoading(false);
+        setLoading(false);
+      },
+      onCancel: () => {
+        toast.info("Profile update cancelled");
+      },
+    });
   };
 
   // If not authenticated, don't render the component (already redirecting)
@@ -157,17 +170,19 @@ const Profile = () => {
           </span>
 
           <div className="userInfo">
-            <h2>Fullname: {user?.fullName || "Not provided"}</h2>
+            <h2>Full Name: {user?.fullName || "Not provided"}</h2>
             <span>
               <span className="title">Username:</span> {user?.username}
             </span>{" "}
             <br />
             <span>
-              <span className="title">Lives in:</span> {user?.city || "Not provided"}
+              <span className="title">Lives in:</span>{" "}
+              {user?.city || "Not provided"}
             </span>{" "}
             <br />
             <span>
-              <span className="title">Phone:</span> {user?.phone || "Not provided"}
+              <span className="title">Phone:</span>{" "}
+              {user?.phone || "Not provided"}
             </span>{" "}
             <br />
             <span>

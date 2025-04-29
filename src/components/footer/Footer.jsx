@@ -34,7 +34,7 @@ const Footer = () => {
               Your premier destination for comfortable and affordable
               accommodations nationwide.
             </p>
-            
+
             <p className="copyright">© 2025 Tour Stay. All rights reserved.</p>
           </div>
         </div>
@@ -54,7 +54,7 @@ const Footer = () => {
               </li>
               <li>
                 <FontAwesomeIcon icon={faEnvelope} className="contact-icon" />
-                <a href="mailto:info@tourstay.com">info@tourstay.com</a>
+                <a href="mailto:info@tourstay.com">tourstay@gmail.com</a>
               </li>
               <li>
                 <FontAwesomeIcon icon={faPhone} className="contact-icon" />
@@ -62,11 +62,9 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          
 
           {/* Social Media Links */}
           <div className="footer-section social-section">
-            
             <h3>Connect With Us</h3>
             <div className="social-icons">
               <a
@@ -119,8 +117,6 @@ const Footer = () => {
               >
                 <FontAwesomeIcon icon={faYoutube} />
               </a>
-
-
             </div>
 
             <button
@@ -130,7 +126,6 @@ const Footer = () => {
               Cancel & Refund Policy{" "}
               <FontAwesomeIcon icon={faArrowRight} className="btn-icon" />
             </button>
-            
           </div>
         </div>
       </div>

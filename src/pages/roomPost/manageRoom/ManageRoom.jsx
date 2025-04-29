@@ -2,33 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./manageRoom.css";
 import useFetch from "../../../hooks/useFetch";
 import axios from "axios";
+import { showConfirmToast } from "../../../components/confirmToast/ConfirmToast";
+import { toast } from "react-toastify";
 
 // Constants
 const MAX_ROOMS = 3;
 const MAX_PHOTOS = 5;
-
-const PEOPLE_ALLOWED_OPTIONS = [
-  "Anyone",
-  "Family Only",
-  "Bachelors Only",
-  "Female Only",
-  "Male Only",
-];
-
-const PEOPLE_NOT_ALLOWED_OPTIONS = [
-  "Children",
-  "Pets",
-  "Smokers",
-  "Guests After Hours",
-];
-
-const REQUIRED_DOCUMENTS_OPTIONS = [
-  "National ID",
-  "Passport",
-  "Driving License",
-  "Work ID",
-  "Student ID",
-];
 
 const initialFormData = {
   title: "",
@@ -130,44 +109,54 @@ const ManageRooms = ({ userId }) => {
   };
 
   const handleEditRoom = (room) => {
-    setCurrentRoom(room);
-    setUploadedPhotos(room.photos || []);
-    setFormErrors({});
-    setPhotoError("");
-    toggleModal("edit", true);
+    showConfirmToast({
+      message: "Are you sure you want to edit this room?",
+      onConfirm: () => {
+        setCurrentRoom(room);
+        setUploadedPhotos(room.photos || []);
+        setFormErrors({});
+        setPhotoError("");
+        toggleModal("edit", true);
+      },
+      onCancel: () => {
+        toast.info("Room edit cancelled");
+      },
+    });
   };
 
   const handleDeleteRoom = async (roomId, photos) => {
-    if (
-      !window.confirm(
-        "Are you sure you want to delete this room? This will also delete all associated photos."
-      )
-    ) {
-      return;
-    }
+    showConfirmToast({
+      message:
+        "Are you sure you want to delete this room? This will also delete all associated photos.",
+      onConfirm: async () => {
+        try {
+          setIsSubmitting(true);
+          await axios.delete(`http://localhost:4000/api/quickrooms/${roomId}`);
 
-    try {
-      setIsSubmitting(true);
-      await axios.delete(`http://localhost:4000/api/quickrooms/${roomId}`);
+          if (photos?.length > 0) {
+            const deletePromises = photos.map((photo) => {
+              const urlParts = photo.split("/");
+              const filenameWithExt = urlParts[urlParts.length - 1];
+              const public_id = filenameWithExt.split(".")[0];
+              return axios.post("http://localhost:4000/cloudinary/delete", {
+                public_id,
+              });
+            });
+            await Promise.all(deletePromises);
+          }
 
-      if (photos?.length > 0) {
-        const deletePromises = photos.map((photo) => {
-          const urlParts = photo.split("/");
-          const filenameWithExt = urlParts[urlParts.length - 1];
-          const public_id = filenameWithExt.split(".")[0];
-          return axios.post("http://localhost:4000/cloudinary/delete", {
-            public_id,
-          });
-        });
-        await Promise.all(deletePromises);
-      }
-
-      setUserRooms((prev) => prev.filter((room) => room._id !== roomId));
-    } catch (err) {
-      alert("Failed to delete room. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
+          setUserRooms((prev) => prev.filter((room) => room._id !== roomId));
+          toast.success("Room deleted successfully!");
+        } catch (err) {
+          toast.error("Failed to delete room. Please try again.");
+        } finally {
+          setIsSubmitting(false);
+        }
+      },
+      onCancel: () => {
+        toast.info("Room deletion cancelled");
+      },
+    });
   };
 
   const handleChange = (e) => {
@@ -306,6 +295,8 @@ const ManageRooms = ({ userId }) => {
         });
         toggleModal("add", false);
         reFetch();
+        // Success toast for adding room
+        toast.success("Room added successfully!");
       } else if (modalState.edit && currentRoom) {
         const oldPhotos = currentRoom.photos || [];
         const photosToDelete = oldPhotos.filter(
@@ -336,7 +327,7 @@ const ManageRooms = ({ userId }) => {
       }
     } catch (err) {
       console.error("Error saving room:", err);
-      alert("Failed to save room. Please try again.");
+      toast.error("Failed to save room. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

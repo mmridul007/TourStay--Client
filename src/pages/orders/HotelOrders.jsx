@@ -3,6 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../../components/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { showConfirmToast } from "../../components/confirmToast/ConfirmToast";
 
 const HotelOrders = () => {
   const { user: currentUser } = useContext(AuthContext);
@@ -171,87 +172,35 @@ const HotelOrders = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      if (!hotelInfo) {
-        console.warn("hotelInfo is null - review can't be submitted");
-        return;
-      }
-
-      let updatedReviews = [...hotelInfo.reviews];
-      if (currentReview) {
-        const confirmUpdate = window.confirm(
-          "Are you sure you want to update your review?"
-        );
-        if (!confirmUpdate) return;
-      }
-
-      if (currentReview) {
-        // Update existing review
-        updatedReviews = updatedReviews.map((review) =>
-          review.userId === currentUser._id
-            ? {
-                ...review,
-                rating: reviewData.rating,
-                comment: reviewData.comment,
-                date: new Date(),
-              }
-            : review
-        );
-      } else {
-        // Add new review
-        updatedReviews.push({
-          userId: currentUser._id,
-          rating: reviewData.rating,
-          comment: reviewData.comment,
-          date: new Date(),
-        });
-      }
-
-      // Calculate new average rating
-      const totalRating = updatedReviews.reduce(
-        (sum, review) => sum + review.rating,
-        0
-      );
-      const newRating =
-        updatedReviews.length > 0 ? totalRating / updatedReviews.length : 0;
-
-      // Update hotel with new review data
-      await axios.put(`http://localhost:4000/api/hotels/${hotelInfo._id}`, {
-        ...hotelInfo,
-        reviews: updatedReviews,
-        rating: parseFloat(newRating.toFixed(1)),
-      });
-
-      showSuccessToast(
-        currentReview
-          ? "Review updated successfully"
-          : "Review submitted successfully"
-      );
-
-      // Close modal and refresh data
-      fetchReviewForHotelByUser(selectedOrder.hotelId);
-      setReviewModalVisible(false);
-    } catch (err) {
-      console.error("Error submitting review:", err);
-      showErrorToast("Failed to save review. Please try again.", "error");
+    if (!hotelInfo) {
+      console.warn("hotelInfo is null - review can't be submitted");
+      return;
     }
-  };
 
-  // Handle review deletion
-  const handleDeleteReview = async () => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete your review?"
-    );
-    if (!confirmDelete) return;
-
-    if (currentReview && hotelInfo) {
+    const submitReview = async () => {
       try {
-        // Filter out the current user's review
-        const updatedReviews = hotelInfo.reviews.filter(
-          (review) => review.userId !== currentUser._id
-        );
+        let updatedReviews = [...hotelInfo.reviews];
 
-        // Calculate new average rating
+        if (currentReview) {
+          updatedReviews = updatedReviews.map((review) =>
+            review.userId === currentUser._id
+              ? {
+                  ...review,
+                  rating: reviewData.rating,
+                  comment: reviewData.comment,
+                  date: new Date(),
+                }
+              : review
+          );
+        } else {
+          updatedReviews.push({
+            userId: currentUser._id,
+            rating: reviewData.rating,
+            comment: reviewData.comment,
+            date: new Date(),
+          });
+        }
+
         const totalRating = updatedReviews.reduce(
           (sum, review) => sum + review.rating,
           0
@@ -259,64 +208,112 @@ const HotelOrders = () => {
         const newRating =
           updatedReviews.length > 0 ? totalRating / updatedReviews.length : 0;
 
-        // Update hotel with new review data
         await axios.put(`http://localhost:4000/api/hotels/${hotelInfo._id}`, {
           ...hotelInfo,
           reviews: updatedReviews,
           rating: parseFloat(newRating.toFixed(1)),
         });
 
-        showSuccessToast("Review deleted successfully");
+        showSuccessToast(
+          currentReview
+            ? "Review updated successfully"
+            : "Review submitted successfully"
+        );
 
-        // Refresh reviews after deletion
         fetchReviewForHotelByUser(selectedOrder.hotelId);
         setReviewModalVisible(false);
       } catch (err) {
-        console.error("Error deleting review:", err);
-        showErrorToast("Failed to delete review. Please try again.");
+        console.error("Error submitting review:", err);
+        showErrorToast("Failed to save review. Please try again.");
       }
+    };
+
+    if (currentReview) {
+      showConfirmToast({
+        message: "Are you sure you want to update your review?",
+        onConfirm: submitReview,
+        onCancel: () => showErrorToast("Review update cancelled."),
+      });
+    } else {
+      await submitReview();
     }
+  };
+
+  // Handle review deletion
+  const handleDeleteReview = async () => {
+    if (!currentReview || !hotelInfo) return;
+
+    showConfirmToast({
+      message: "Are you sure you want to delete your review?",
+      onConfirm: async () => {
+        try {
+          const updatedReviews = hotelInfo.reviews.filter(
+            (review) => review.userId !== currentUser._id
+          );
+
+          const totalRating = updatedReviews.reduce(
+            (sum, review) => sum + review.rating,
+            0
+          );
+          const newRating =
+            updatedReviews.length > 0 ? totalRating / updatedReviews.length : 0;
+
+          await axios.put(`http://localhost:4000/api/hotels/${hotelInfo._id}`, {
+            ...hotelInfo,
+            reviews: updatedReviews,
+            rating: parseFloat(newRating.toFixed(1)),
+          });
+
+          showSuccessToast("Review deleted successfully");
+
+          fetchReviewForHotelByUser(selectedOrder.hotelId);
+          setReviewModalVisible(false);
+        } catch (err) {
+          console.error("Error deleting review:", err);
+          showErrorToast("Failed to delete review. Please try again.");
+        }
+      },
+      onCancel: () => showErrorToast("Review deletion cancelled."),
+    });
   };
 
   // Handle order cancellation
   const handleCancelOrder = async (orderId) => {
-    const confirmCancel = window.confirm(
-      "Do you really want to cancel this order?"
-    );
-    if (!confirmCancel) return;
-
     const orderToCancel = orders.find((order) => order._id === orderId);
-    // console.log(orderId)
+    if (!orderToCancel) return;
 
-    // Cannot cancel if check-in date has passed
-    const currentDate = new Date();
     const checkInDate = new Date(orderToCancel.checkIn);
+    const currentDate = new Date();
 
     if (checkInDate <= currentDate) {
-      showErrorToast("Failed to cancel order. Please try again.");
+      showErrorToast("Cannot cancel an order after check-in date.");
       return;
     }
 
-    try {
-      // Update order status to "cancelled"
-      await axios.put(
-        `http://localhost:4000/api/hotel-payment/cancel/${orderId}`,
-        {
-          bookingStatus: "cancelled",
-          paymentStatus:
-            orderToCancel.paymentStatus === "completed"
-              ? "refund-initiated"
-              : "cancelled",
-        }
-      );
+    showConfirmToast({
+      message: "Before cancel the order read our Cancel & Refund policy form the footer. Now are you sure you want to cancel this order?",
+      onConfirm: async () => {
+        try {
+          await axios.put(
+            `http://localhost:4000/api/hotel-payment/cancel/${orderId}`,
+            {
+              bookingStatus: "cancelled",
+              paymentStatus:
+                orderToCancel.paymentStatus === "completed"
+                  ? "refund-initiated"
+                  : "cancelled",
+            }
+          );
 
-      showSuccessToast("Order cancelled successfully");
-      // Refresh orders
-      await fetchOrders();
-    } catch (err) {
-      console.error("Error cancelling order:", err);
-      showErrorToast("Failed to cancel order. Please try again.");
-    }
+          showSuccessToast("Order cancelled successfully");
+          await fetchOrders();
+        } catch (err) {
+          console.error("Error cancelling order:", err);
+          showErrorToast("Failed to cancel order. Please try again.");
+        }
+      },
+      onCancel: () => toast.info("Order cancellation aborted."),
+    });
   };
 
   // Format date for display
@@ -336,7 +333,6 @@ const HotelOrders = () => {
   const goToNextPage = () =>
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   const goToPrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-
 
   return (
     <div>

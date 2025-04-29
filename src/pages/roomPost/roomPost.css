@@ -9,7 +9,6 @@
 .containerHeader {
   padding: 20px;
   font-style: italic;
-
 }
 
 .itemTitle {
@@ -56,4 +55,10 @@
 .manageRoomsContent,
 .transactionsContent {
   min-height: 200px;
+}
+
+@media (max-width: 576px) {
+  .container {
+    max-width: 93%;
+  }
 }

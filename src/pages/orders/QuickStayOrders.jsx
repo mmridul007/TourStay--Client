@@ -3,6 +3,8 @@ import axios from "axios";
 import "./orders.css";
 import { AuthContext } from "../../components/context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { showConfirmToast } from "../../components/confirmToast/ConfirmToast";
 
 const QuickStayOrders = () => {
   const { user: currentUser } = useContext(AuthContext);
@@ -26,6 +28,9 @@ const QuickStayOrders = () => {
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [ordersPerPage] = useState(10);
+
+  const showSuccessToast = (message) => toast.success(message);
+  const showErrorToast = (message) => toast.error(message);
 
   // Show alert message
   const showAlert = (message, type = "success") => {
@@ -159,54 +164,72 @@ const QuickStayOrders = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      if (currentReview) {
-        // Update existing review
-        await axios.put(
-          `http://localhost:4000/api/roomReview/${currentReview._id}`,
-          {
-            rating: reviewData.rating,
-            comment: reviewData.comment,
+    if (currentReview) {
+      showConfirmToast({
+        message: "Do you want to update your review?",
+        onConfirm: async () => {
+          try {
+            await axios.put(
+              `http://localhost:4000/api/roomReview/${currentReview._id}`,
+              {
+                rating: reviewData.rating,
+                comment: reviewData.comment,
+              }
+            );
+            toast.success("Review updated successfully");
+            fetchReviewForRoomByUser(selectedOrder.roomId);
+            setReviewModalVisible(false);
+          } catch (err) {
+            console.error("Error submitting review:", err);
+            toast.error("Failed to save review. Please try again.");
           }
-        );
-        showAlert("Review updated successfully");
-      } else {
-        // Create new review
+        },
+        onCancel: () => {
+          toast.info("Update canceled.");
+        },
+      });
+    } else {
+      // No current review, directly create a new one
+      try {
         await axios.post("http://localhost:4000/api/roomReview", {
           roomId: selectedOrder.roomId,
           userId: currentUser._id,
           rating: reviewData.rating,
           comment: reviewData.comment,
         });
-        showAlert("Review submitted successfully");
+        toast.success("Review submitted successfully");
+        fetchReviewForRoomByUser(selectedOrder.roomId);
+        setReviewModalVisible(false);
+      } catch (err) {
+        console.error("Error submitting review:", err);
+        toast.error("Failed to save review. Please try again.");
       }
-
-      // Close modal and refresh data
-      fetchReviewForRoomByUser(selectedOrder.roomId);
-      setReviewModalVisible(false);
-    } catch (err) {
-      console.error("Error submitting review:", err);
-      showAlert("Failed to save review. Please try again.", "error");
     }
   };
 
   // Handle review deletion
   const handleDeleteReview = async () => {
-    if (currentReview) {
-      try {
-        await axios.delete(
-          `http://localhost:4000/api/roomReview/${currentReview._id}`
-        );
-        showAlert("Review deleted successfully");
+    if (!currentReview) return;
 
-        // Refresh reviews after deletion
-        fetchReviewForRoomByUser(selectedOrder.roomId);
-        setReviewModalVisible(false);
-      } catch (err) {
-        console.error("Error deleting review:", err);
-        showAlert("Failed to delete review. Please try again.", "error");
-      }
-    }
+    showConfirmToast({
+      message: "Are you sure you want to delete this item?",
+      onConfirm: async () => {
+        try {
+          await axios.delete(
+            `http://localhost:4000/api/roomReview/${currentReview._id}`
+          );
+          toast.success("Review deleted successfully");
+          fetchReviewForRoomByUser(selectedOrder.roomId);
+          setReviewModalVisible(false);
+        } catch (err) {
+          console.error("Error deleting review:", err);
+          toast.error("Failed to delete review. Please try again.");
+        }
+      },
+      onCancel: () => {
+        toast.info("Action canceled.");
+      },
+    });
   };
 
   // Handle order cancellation
@@ -225,61 +248,68 @@ const QuickStayOrders = () => {
       return;
     }
 
-    try {
-      // Update order status to "cancelled"
-      await axios.put(
-        `http://localhost:4000/api/payment/cancelOrder/${orderId}`,
-        {
-          status: "cancelled",
+    showConfirmToast({
+      message:
+        "Before cancel the order read our Cancel & Refund policy form the footer. Now are you sure you want to cancel this order?",
+      onConfirm: async () => {
+        try {
+          // Update order status to "cancelled"
+          await axios.put(
+            `http://localhost:4000/api/payment/cancelOrder/${orderId}`,
+            { status: "cancelled" }
+          );
+
+          // Get the room data to update unavailable dates
+          const roomResponse = await axios.get(
+            `http://localhost:4000/api/quickrooms/find/${orderToCancel.roomId}`
+          );
+          const roomData = roomResponse.data;
+
+          // Create date objects for check-in and check-out
+          const checkIn = new Date(orderToCancel.checkIn);
+          const checkOut = new Date(orderToCancel.checkOut);
+
+          // Create an array of dates between check-in and check-out (inclusive)
+          const datesToRemove = [];
+          const tempDate = new Date(checkIn);
+          while (tempDate <= checkOut) {
+            datesToRemove.push(new Date(tempDate).toString());
+            tempDate.setDate(tempDate.getDate() + 1);
+          }
+
+          // Filter out dates that need to be removed
+          const updatedUnavailableDates = roomData.unavailableDates.filter(
+            (dateStr) => {
+              const dateToCheck = new Date(dateStr);
+              return !datesToRemove.some((dateToRemove) => {
+                const removalDate = new Date(dateToRemove);
+                return (
+                  dateToCheck.toDateString() === removalDate.toDateString()
+                );
+              });
+            }
+          );
+
+          // Update the room with the new unavailable dates
+          await axios.put(
+            `http://localhost:4000/api/quickrooms/${orderToCancel.roomId}`,
+            {
+              ...roomData,
+              unavailableDates: updatedUnavailableDates,
+            }
+          );
+
+          toast.success("Order cancelled successfully");
+          await fetchOrders(); // Refresh orders
+        } catch (err) {
+          console.error("Error cancelling order:", err);
+          toast.error("Failed to cancel order. Please try again.", "error");
         }
-      );
-
-      // Get the room data to update unavailable dates
-      const roomResponse = await axios.get(
-        `http://localhost:4000/api/quickrooms/find/${orderToCancel.roomId}`
-      );
-      const roomData = roomResponse.data;
-
-      // Create date objects for check-in and check-out
-      const checkIn = new Date(orderToCancel.checkIn);
-      const checkOut = new Date(orderToCancel.checkOut);
-
-      // Create an array of dates between check-in and check-out (inclusive)
-      const datesToRemove = [];
-      const currentDate = new Date(checkIn);
-
-      while (currentDate <= checkOut) {
-        datesToRemove.push(new Date(currentDate).toString());
-        currentDate.setDate(currentDate.getDate() + 1);
-      }
-
-      // Filter out dates that need to be removed
-      const updatedUnavailableDates = roomData.unavailableDates.filter(
-        (dateStr) => {
-          const dateToCheck = new Date(dateStr);
-          return !datesToRemove.some((dateToRemove) => {
-            const removalDate = new Date(dateToRemove);
-            return dateToCheck.toDateString() === removalDate.toDateString();
-          });
-        }
-      );
-
-      // Update the room with the new unavailable dates
-      await axios.put(
-        `http://localhost:4000/api/quickrooms/${orderToCancel.roomId}`,
-        {
-          ...roomData,
-          unavailableDates: updatedUnavailableDates,
-        }
-      );
-
-      showAlert("Order cancelled successfully");
-      // Refresh orders
-      await fetchOrders();
-    } catch (err) {
-      console.error("Error cancelling order:", err);
-      showAlert("Failed to cancel order. Please try again.", "error");
-    }
+      },
+      onCancel: () => {
+        toast.info("Order cancellation canceled.", "info");
+      },
+    });
   };
 
   // Check if owner contact is still valid (within 3 days of checkout)
@@ -320,7 +350,6 @@ const QuickStayOrders = () => {
   return (
     <div>
       <div className="orders-container">
-
         {alert.show && (
           <div className={`alert ${alert.type}`}>{alert.message}</div>
         )}

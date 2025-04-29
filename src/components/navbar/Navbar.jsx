@@ -7,13 +7,15 @@ import {
   faClipboardList,
   faSignInAlt,
   faUserPlus,
-  faSignOutAlt
+  faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useState, useEffect } from "react";
 import "./navbar.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { toast } from "react-toastify";
+import { showConfirmToast } from "../confirmToast/ConfirmToast";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -25,18 +27,21 @@ const Navbar = () => {
 
   const handleProfile = () => {
     navigate(`/profile/${user._id}`);
-  }
+  };
 
   const handleOrders = () => {
     navigate(`/orders/${user._id}`);
-  }
-  
+  };
+
   // Set active item based on current location/path
   useEffect(() => {
     if (location.pathname.startsWith("/profile")) {
       // Don't set any item as active on profile pages
       setActiveItem("");
-    } else if (location.pathname.startsWith("/hotels") || location.pathname === "/") {
+    } else if (
+      location.pathname.startsWith("/hotels") ||
+      location.pathname === "/"
+    ) {
       setActiveItem("hotels");
     } else if (location.pathname.startsWith("/quickrooms")) {
       setActiveItem("quickrooms");
@@ -48,7 +53,7 @@ const Navbar = () => {
       setActiveItem("");
     }
   }, [location.pathname]);
-  
+
   const handleItemClick = (item) => {
     setActiveItem(item);
     // Navigate to the corresponding page
@@ -61,11 +66,17 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    // Clear user state or token here
-    console.log("User logged out");
-    // Example if using localStorage:
-    localStorage.removeItem("user");
-    window.location.reload(); // Refresh to update UI
+    showConfirmToast({
+      message: "Are you sure you want to log out?",
+      onConfirm: () => {
+        localStorage.removeItem("user");
+        toast.success("You have been logged out.");
+        window.location.reload(); // Or redirect to login page
+      },
+      onCancel: () => {
+        toast.info("Logout canceled.");
+      },
+    });
   };
 
   const handleLogin = () => {
@@ -164,14 +175,18 @@ const Navbar = () => {
           {user ? (
             <div className="navItems">
               {user.img ? (
-                <img onClick={handleProfile} src={user.img} alt={user.username} className="userImage" />
+                <img
+                  onClick={handleProfile}
+                  src={user.img}
+                  alt={user.username}
+                  className="userImage"
+                />
               ) : (
-                <span onClick={handleProfile} className="usernameText">{user.username}</span>
+                <span onClick={handleProfile} className="usernameText">
+                  {user.username}
+                </span>
               )}
-              <div 
-                className="orderButton" 
-                onClick={handleOrders}
-              >
+              <div className="orderButton" onClick={handleOrders}>
                 <FontAwesomeIcon icon={faClipboardList} />
                 <span>Orders</span>
               </div>
@@ -182,7 +197,10 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="navItems authButtonContainer">
-              <button onClick={handleRegister} className="navButton registerButton">
+              <button
+                onClick={handleRegister}
+                className="navButton registerButton"
+              >
                 <FontAwesomeIcon icon={faUserPlus} className="buttonIcon" />
                 <span>Register</span>
               </button>
@@ -238,10 +256,14 @@ const Navbar = () => {
               className={`mobile-menu-item ${
                 activeItem === "orders" ? "active" : ""
               }`}
-              onClick={() => handleItemClick("orders")}
+              onClick={() => {
+                handleOrders();
+                setActiveItem("orders");
+                setSidebarOpen(false); // Close sidebar
+              }}
             >
               <FontAwesomeIcon icon={faClipboardList} />
-              <span onClick={handleOrders}>Orders</span>
+              <span>Orders</span>
             </div>
           )}
         </div>
@@ -250,14 +272,16 @@ const Navbar = () => {
         {user ? (
           <div className="mobile-nav-buttons">
             {user.img ? (
-              <img 
-                src={user.img} 
-                alt={user.username} 
+              <img
+                src={user.img}
+                alt={user.username}
                 className="userImage"
-                onClick={handleProfile} 
+                onClick={handleProfile}
               />
             ) : (
-              <span className="username" onClick={handleProfile}>{user.username}</span>
+              <span className="username" onClick={handleProfile}>
+                {user.username}
+              </span>
             )}
             <button className="navButton logoutButton" onClick={handleLogout}>
               <FontAwesomeIcon icon={faSignOutAlt} className="buttonIcon" />
@@ -266,7 +290,10 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="mobile-nav-buttons">
-            <button onClick={handleRegister} className="navButton registerButton">
+            <button
+              onClick={handleRegister}
+              className="navButton registerButton"
+            >
               <FontAwesomeIcon icon={faUserPlus} className="buttonIcon" />
               <span>Register</span>
             </button>
