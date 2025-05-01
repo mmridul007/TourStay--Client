@@ -124,7 +124,8 @@ const Register = () => {
     try {
       await axios.post(
         "https://tourstay-server.onrender.com/api/auth/register",
-        dataToSubmit
+        dataToSubmit,
+        { withCredentials: true }
       );
       setSuccessMessage("Registration successful! Redirecting to login...");
       setTimeout(() => {
