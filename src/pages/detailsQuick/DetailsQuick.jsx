@@ -709,12 +709,7 @@ const DetailsQuick = () => {
                   <h3>Cancellation Policy</h3>
                   <ul className="cancellation-policy">
                     <li>
-                      80% of the total booking amount will be refunded if it's
-                      cancelled 24 hours before the check-in date.
-                    </li>
-                    <li>
-                      This applies only for bookings more than 1 Day. No amount
-                      will be refunded for single day bookings.
+                      Check TourStay's cancellation policy from the footer section.
                     </li>
                   </ul>
 
