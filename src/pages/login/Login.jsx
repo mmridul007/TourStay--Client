@@ -44,7 +44,7 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/auth/login",
+        "https://tourstay-server.onrender.com/api/auth/login",
         credentials,
         {
           withCredentials: true,

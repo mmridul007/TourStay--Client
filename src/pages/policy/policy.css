@@ -1,5 +1,5 @@
 .policy-container {
-  max-width: 80%;
+  max-width: 70%;
   margin: 0 auto;
   padding: 30px;
   background-color: #ffffff;
@@ -7,6 +7,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   font-family: "Arial", sans-serif;
   color: #333333;
+  margin-bottom: 20px;
 }
 
 .policy-header {
@@ -101,10 +102,15 @@
   color: #0066cc;
 }
 
+.wearningStar {
+  color: red;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .policy-container {
     padding: 20px;
+    max-width: 96%;
   }
 
   .policy-title {

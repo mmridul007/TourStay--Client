@@ -51,7 +51,7 @@ const OrderConfirmation = ({
     setIsLoadingUserData(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/users/${customerId}`
+        `https://tourstay-server.onrender.com/api/users/${customerId}`
       );
       if (response.data) {
         setCustomerInfo({
@@ -175,7 +175,7 @@ const OrderConfirmation = ({
       };
 
       const response = await axios.post(
-        `http://localhost:4000/api/payment/sslcommerz/init`,
+        `https://tourstay-server.onrender.com/api/payment/sslcommerz/init`,
         payload,
         {
           headers: { "Content-Type": "application/json" },

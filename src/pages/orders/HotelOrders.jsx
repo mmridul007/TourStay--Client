@@ -44,7 +44,7 @@ const HotelOrders = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/hotel-payment/customer/${currentUser?._id}`
+        `https://tourstay-server.onrender.com/api/hotel-payment/customer/${currentUser?._id}`
       );
       // Sort orders by date (newest first)
       const sortedOrders = response.data.sort(
@@ -66,7 +66,7 @@ const HotelOrders = () => {
     setHotelLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/hotels/find/${hotelId._id}`
+        `https://tourstay-server.onrender.com/api/hotels/find/${hotelId._id}`
       );
       setHotelInfo(response.data);
     } catch (err) {
@@ -81,7 +81,7 @@ const HotelOrders = () => {
     setReviewsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/hotels/find/${hotelId._id}`
+        `https://tourstay-server.onrender.com/api/hotels/find/${hotelId._id}`
       );
 
       const hotelData = response.data;
@@ -208,11 +208,14 @@ const HotelOrders = () => {
         const newRating =
           updatedReviews.length > 0 ? totalRating / updatedReviews.length : 0;
 
-        await axios.put(`http://localhost:4000/api/hotels/${hotelInfo._id}`, {
-          ...hotelInfo,
-          reviews: updatedReviews,
-          rating: parseFloat(newRating.toFixed(1)),
-        });
+        await axios.put(
+          `https://tourstay-server.onrender.com/api/hotels/${hotelInfo._id}`,
+          {
+            ...hotelInfo,
+            reviews: updatedReviews,
+            rating: parseFloat(newRating.toFixed(1)),
+          }
+        );
 
         showSuccessToast(
           currentReview
@@ -258,11 +261,14 @@ const HotelOrders = () => {
           const newRating =
             updatedReviews.length > 0 ? totalRating / updatedReviews.length : 0;
 
-          await axios.put(`http://localhost:4000/api/hotels/${hotelInfo._id}`, {
-            ...hotelInfo,
-            reviews: updatedReviews,
-            rating: parseFloat(newRating.toFixed(1)),
-          });
+          await axios.put(
+            `https://tourstay-server.onrender.com/api/hotels/${hotelInfo._id}`,
+            {
+              ...hotelInfo,
+              reviews: updatedReviews,
+              rating: parseFloat(newRating.toFixed(1)),
+            }
+          );
 
           showSuccessToast("Review deleted successfully");
 
@@ -291,11 +297,12 @@ const HotelOrders = () => {
     }
 
     showConfirmToast({
-      message: "Before cancel the order read our Cancel & Refund policy form the footer. Now are you sure you want to cancel this order?",
+      message:
+        "Before cancel the order read our Cancel & Refund policy form the footer. Now are you sure you want to cancel this order?",
       onConfirm: async () => {
         try {
           await axios.put(
-            `http://localhost:4000/api/hotel-payment/cancel/${orderId}`,
+            `https://tourstay-server.onrender.com/api/hotel-payment/cancel/${orderId}`,
             {
               bookingStatus: "cancelled",
               paymentStatus:

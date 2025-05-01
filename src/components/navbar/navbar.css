@@ -113,12 +113,12 @@ body {
 
 /* Logout button */
 .logoutButton {
-  background-color: #f33a3a;
+  background-color: #656a73;
   color: white;
 }
 
 .logoutButton:hover {
-  background-color: #d32f2f;
+  background-color: #373a40;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -194,7 +194,7 @@ body {
   gap: 6px;
   padding: 8px 12px;
   cursor: pointer;
-  background-color: #167aec;
+  background-color: #0171C2;
   color: rgb(247, 246, 246);
   font-weight: 500;
   border-radius: 4px;
@@ -203,7 +203,7 @@ body {
 }
 
 .orderButton:hover {
-  background-color: #3d688b;
+  background-color: #0a4e7e;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }

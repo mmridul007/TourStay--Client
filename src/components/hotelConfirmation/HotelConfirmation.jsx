@@ -41,25 +41,35 @@ const HotelConfirmation = ({
   const daysDifference =
     Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) || 1;
 
-  // Calculate advance payment (10% non-refundable)
+  // Calculate advance payment (10% non-refundable) plus platform charge
   useEffect(() => {
-    const calculatedAdvance = Math.round(totalAmount * 0.1);
-    setAdvanceAmount(calculatedAdvance);
+    // 1.5% platform charge on the total amount (same for both payment types)
+    const platformCharge = Math.round(totalAmount * 0.015);
 
     if (paymentType === "advance") {
+      // 10% of total amount
+      const advance = Math.round(totalAmount * 0.1);
+      // Total to pay = advance + platform charge
+      setAdvanceAmount(advance);
+      setFinalAmount(advance + platformCharge);
+
       setIsPromoApplied(false);
       setPromoCode("");
       setPromoMessage("Promo codes are not applicable with advance payment.");
       setDiscount(0);
       setIsPromoValid(false);
-      setFinalAmount(calculatedAdvance);
     } else {
-      // First apply promo discount
+      // Full payment with possible promo discount
       const discountedTotal = Math.round(totalAmount * (1 - discount / 100));
-      // Then add 5% platform charge
-      const platformCharge = Math.round(discountedTotal * 0.05);
       const finalPayableAmount = discountedTotal + platformCharge;
       setFinalAmount(finalPayableAmount);
+
+      // Clear the promo message when switching from advance to full payment
+      if (
+        promoMessage === "Promo codes are not applicable with advance payment."
+      ) {
+        setPromoMessage("");
+      }
     }
   }, [paymentType, totalAmount, discount]);
 
@@ -75,11 +85,11 @@ const HotelConfirmation = ({
     setIsLoadingUserData(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/users/${customerId}`
+        `https://tourstay-server.onrender.com/api/users/${customerId}`
       );
       if (response.data) {
         setCustomerInfo({
-          name: response.data.username || "",
+          name: response.data.fullName || "",
           email: response.data.email || "",
           phone: response.data.phone || "",
         });
@@ -132,7 +142,7 @@ const HotelConfirmation = ({
       [name]: value,
     }));
   };
-  //  console.log(roomNumbers)
+
   // Toggle edit mode for customer info
   const toggleEditMode = () => {
     setIsEditing(!isEditing);
@@ -154,7 +164,7 @@ const HotelConfirmation = ({
       const bookingData = {
         hotelId: hotelData._id,
         customerId: customerId || "guest",
-        customerName: customerInfo.name,
+        customerName: customerInfo.fullName,
         customerEmail: customerInfo.email,
         customerPhone: customerInfo.phone,
         checkIn: startDate,
@@ -185,7 +195,7 @@ const HotelConfirmation = ({
       };
 
       const response = await axios.post(
-        `http://localhost:4000/api/hotel-payment/init`,
+        `https://tourstay-server.onrender.com/api/hotel-payment/init`,
         payload,
         {
           headers: { "Content-Type": "application/json" },
@@ -216,6 +226,8 @@ const HotelConfirmation = ({
       setIsProcessing(false);
     }
   };
+
+  // console.log(customerInfo);
 
   return (
     <div className="hotel-confirmation-overlay">
@@ -365,19 +377,30 @@ const HotelConfirmation = ({
             <span>BDT {totalAmount}</span>
           </div>
 
-          {discount > 0 && (
+          {paymentType === "full" && discount > 0 && (
             <div className="price-row discount">
               <span>Discount ({discount}%)</span>
               <span>-BDT {Math.round((totalAmount * discount) / 100)}</span>
             </div>
           )}
 
-          <div className="price-row platform-charge">
-            <span>Platform Charge (5%)</span>
-            <span>
-              +BDT {Math.round(totalAmount * (1 - discount / 100) * 0.05)}
-            </span>
-          </div>
+          {paymentType === "advance" ? (
+            <>
+              <div className="price-row">
+                <span>Advance Payment (10%)</span>
+                <span>BDT {advanceAmount}</span>
+              </div>
+              <div className="price-row platform-charge">
+                <span>Platform Charge (1.5%)</span>
+                <span>+BDT {Math.round(totalAmount * 0.015)}</span>
+              </div>
+            </>
+          ) : (
+            <div className="price-row platform-charge">
+              <span>Platform Charge (1.5%)</span>
+              <span>+BDT {Math.round(totalAmount * 0.015)}</span>
+            </div>
+          )}
 
           <div className="price-row total">
             <span>Total Amount</span>
@@ -424,8 +447,8 @@ const HotelConfirmation = ({
               <div className="option-content">
                 <span className="option-title">Advance Payment (10%)</span>
                 <span className="option-description">
-                  Pay BDT {advanceAmount} now (non-refundable), remaining at
-                  check-in
+                  Pay BDT {advanceAmount + Math.round(totalAmount * 0.015)} now
+                  (non-refundable), remaining at check-in
                 </span>
               </div>
             </label>

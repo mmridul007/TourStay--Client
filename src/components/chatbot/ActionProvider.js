@@ -311,7 +311,7 @@ class ActionProvider {
 
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/hotels/search`,
+        `https://tourstay-server.onrender.com/api/hotels/search`,
         {
           params: {
             city,
@@ -370,7 +370,7 @@ class ActionProvider {
 
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/quickrooms/searchforChat`,
+        `https://tourstay-server.onrender.com/api/quickrooms/searchforChat`,
         {
           params: { city },
         }

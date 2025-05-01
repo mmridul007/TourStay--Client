@@ -13,7 +13,7 @@ const PaymentSuccess = () => {
     const verifyPayment = async () => {
       try {
         setLoading(true);
-        const endpoint = `http://localhost:4000/api/payment/verify/${tran_id}`;
+        const endpoint = `https://tourstay-server.onrender.com/api/payment/verify/${tran_id}`;
         const response = await axios.get(endpoint);
 
         if (response.data.status !== "completed") {

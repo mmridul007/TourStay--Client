@@ -1,11 +1,12 @@
 import React from "react";
 import "./policy.css";
 import Navbar from "../../components/navbar/Navbar";
+import Footer from "../../components/footer/Footer";
 
 const Policy = () => {
   return (
     <div>
-        <Navbar/>
+      <Navbar />
       <div className="policy-container">
         <div className="policy-header">
           <h1 className="policy-title">
@@ -68,8 +69,12 @@ const Policy = () => {
                 </tr>
                 <tr>
                   <td>7+ days before check-in</td>
-                  <td>80% refund</td>
+                  <td>100% refund</td>
                 </tr>
+                <td>
+                  <span className="wearningStar">**</span> N.B. You can't get
+                  back the platform fees.
+                </td>
               </tbody>
             </table>
           </div>
@@ -115,6 +120,7 @@ const Policy = () => {
           </p>
         </footer>
       </div>
+      <Footer/>
     </div>
   );
 };

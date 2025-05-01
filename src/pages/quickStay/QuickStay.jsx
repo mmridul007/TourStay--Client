@@ -42,7 +42,7 @@ const QuickStay = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/quickrooms/search/city`,
+        `https://tourstay-server.onrender.com/api/quickrooms/search/city`,
         {
           params: { city: trimmedCity },
         }

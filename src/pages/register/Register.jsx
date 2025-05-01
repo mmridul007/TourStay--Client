@@ -122,7 +122,10 @@ const Register = () => {
     const { confirmPassword, ...dataToSubmit } = formData;
 
     try {
-      await axios.post("http://localhost:4000/api/auth/register", dataToSubmit);
+      await axios.post(
+        "https://tourstay-server.onrender.com/api/auth/register",
+        dataToSubmit
+      );
       setSuccessMessage("Registration successful! Redirecting to login...");
       setTimeout(() => {
         navigate("/login");

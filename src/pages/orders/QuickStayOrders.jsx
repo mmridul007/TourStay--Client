@@ -45,7 +45,7 @@ const QuickStayOrders = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/payment/orderFor/${currentUser?._id}`
+        `https://tourstay-server.onrender.com/api/payment/orderFor/${currentUser?._id}`
       );
       // Sort orders by date (newest first)
       const sortedOrders = response.data.sort(
@@ -66,7 +66,7 @@ const QuickStayOrders = () => {
     setOwnerLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/users/${ownerId}`
+        `https://tourstay-server.onrender.com/api/users/${ownerId}`
       );
       setOwnerInfo(response.data);
     } catch (err) {
@@ -81,7 +81,7 @@ const QuickStayOrders = () => {
     setReviewsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/roomReview/findForUserAndRoom/${currentUser?._id}/${roomId}`
+        `https://tourstay-server.onrender.com/api/roomReview/findForUserAndRoom/${currentUser?._id}/${roomId}`
       );
       const review = response.data;
 
@@ -170,7 +170,7 @@ const QuickStayOrders = () => {
         onConfirm: async () => {
           try {
             await axios.put(
-              `http://localhost:4000/api/roomReview/${currentReview._id}`,
+              `https://tourstay-server.onrender.com/api/roomReview/${currentReview._id}`,
               {
                 rating: reviewData.rating,
                 comment: reviewData.comment,
@@ -191,12 +191,15 @@ const QuickStayOrders = () => {
     } else {
       // No current review, directly create a new one
       try {
-        await axios.post("http://localhost:4000/api/roomReview", {
-          roomId: selectedOrder.roomId,
-          userId: currentUser._id,
-          rating: reviewData.rating,
-          comment: reviewData.comment,
-        });
+        await axios.post(
+          "https://tourstay-server.onrender.com/api/roomReview",
+          {
+            roomId: selectedOrder.roomId,
+            userId: currentUser._id,
+            rating: reviewData.rating,
+            comment: reviewData.comment,
+          }
+        );
         toast.success("Review submitted successfully");
         fetchReviewForRoomByUser(selectedOrder.roomId);
         setReviewModalVisible(false);
@@ -216,7 +219,7 @@ const QuickStayOrders = () => {
       onConfirm: async () => {
         try {
           await axios.delete(
-            `http://localhost:4000/api/roomReview/${currentReview._id}`
+            `https://tourstay-server.onrender.com/api/roomReview/${currentReview._id}`
           );
           toast.success("Review deleted successfully");
           fetchReviewForRoomByUser(selectedOrder.roomId);
@@ -255,13 +258,13 @@ const QuickStayOrders = () => {
         try {
           // Update order status to "cancelled"
           await axios.put(
-            `http://localhost:4000/api/payment/cancelOrder/${orderId}`,
+            `https://tourstay-server.onrender.com/api/payment/cancelOrder/${orderId}`,
             { status: "cancelled" }
           );
 
           // Get the room data to update unavailable dates
           const roomResponse = await axios.get(
-            `http://localhost:4000/api/quickrooms/find/${orderToCancel.roomId}`
+            `https://tourstay-server.onrender.com/api/quickrooms/find/${orderToCancel.roomId}`
           );
           const roomData = roomResponse.data;
 
@@ -292,7 +295,7 @@ const QuickStayOrders = () => {
 
           // Update the room with the new unavailable dates
           await axios.put(
-            `http://localhost:4000/api/quickrooms/${orderToCancel.roomId}`,
+            `https://tourstay-server.onrender.com/api/quickrooms/${orderToCancel.roomId}`,
             {
               ...roomData,
               unavailableDates: updatedUnavailableDates,

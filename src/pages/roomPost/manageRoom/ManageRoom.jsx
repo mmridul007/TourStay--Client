@@ -131,7 +131,9 @@ const ManageRooms = ({ userId }) => {
       onConfirm: async () => {
         try {
           setIsSubmitting(true);
-          await axios.delete(`http://localhost:4000/api/quickrooms/${roomId}`);
+          await axios.delete(
+            `https://tourstay-server.onrender.com/api/quickrooms/${roomId}`
+          );
 
           if (photos?.length > 0) {
             const deletePromises = photos.map((photo) => {
@@ -288,11 +290,14 @@ const ManageRooms = ({ userId }) => {
     setIsSubmitting(true);
     try {
       if (modalState.add) {
-        await axios.post(`http://localhost:4000/api/quickrooms/`, {
-          ...formData,
-          userID: userId,
-          photos: uploadedPhotos,
-        });
+        await axios.post(
+          `https://tourstay-server.onrender.com/api/quickrooms/`,
+          {
+            ...formData,
+            userID: userId,
+            photos: uploadedPhotos,
+          }
+        );
         toggleModal("add", false);
         reFetch();
         // Success toast for adding room
@@ -316,7 +321,7 @@ const ManageRooms = ({ userId }) => {
         }
 
         await axios.put(
-          `http://localhost:4000/api/quickrooms/${currentRoom._id}`,
+          `https://tourstay-server.onrender.com/api/quickrooms/${currentRoom._id}`,
           {
             ...formData,
             photos: uploadedPhotos,

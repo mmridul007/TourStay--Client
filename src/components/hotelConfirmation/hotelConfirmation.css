@@ -339,4 +339,8 @@
   .confirm-btn {
     margin-left: 0;
   }
+
+  .close-btn{
+    display: none;
+  }
 }

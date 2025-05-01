@@ -9,6 +9,7 @@ const FeaturedSlider = () => {
   const cities = [
     "Dhaka",
     "Chittagong",
+    "Cox's Bazar",
     "Sylhet",
     "Rajshahi",
     "Khulna",
@@ -85,6 +86,8 @@ const FeaturedSlider = () => {
       "https://media.istockphoto.com/id/1497696859/photo/chittagong-city-skyline-drone-view-of-chittagong-city.jpg?s=612x612&w=0&k=20&c=3LGbUKRY8K3FRMZNgvJNutXW2iVUu7_xa8pxp2N7ItE=",
     chittagong:
       "https://images.unsplash.com/photo-1619713277018-c5499173232c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2hpdHRhZ29uZ3xlbnwwfHwwfHx8MA%3D%3D",
+    "cox's bazar":
+      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/e2/f8/43/longest-sea-beach-in.jpg?w=1100&h=1100&s=1",
     sylhet:
       "https://media.istockphoto.com/id/1550261852/photo/beautiful-tea-gardens-in-srimongol-sylhet.jpg?s=612x612&w=0&k=20&c=fiEPm28qBRB-PDaSb73AaFTK3NoLu9Kg1cfXHOHXndM=",
     rajshahi:

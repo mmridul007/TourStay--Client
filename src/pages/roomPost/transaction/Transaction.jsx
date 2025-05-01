@@ -32,7 +32,7 @@ const Transaction = ({ id }) => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/api/users/${id}`
+          `https://tourstay-server.onrender.com/api/users/${id}`
         );
         setUser(response.data);
         setWithdrawMethod(response.data.withdrawMethod || "");
@@ -52,7 +52,7 @@ const Transaction = ({ id }) => {
     const fetchOrderHistory = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/api/payment/orderForOwner/${id}`
+          `https://tourstay-server.onrender.com/api/payment/orderForOwner/${id}`
         );
         setOrderHistory(response.data);
       } catch (err) {
@@ -86,7 +86,7 @@ const Transaction = ({ id }) => {
         if (!details[order.roomId]) {
           try {
             const response = await axios.get(
-              `http://localhost:4000/api/quickrooms/find/${order.roomId}`
+              `https://tourstay-server.onrender.com/api/quickrooms/find/${order.roomId}`
             );
             details[order.roomId] = response.data.title || "Unknown Room";
           } catch (err) {
@@ -112,7 +112,7 @@ const Transaction = ({ id }) => {
       onConfirm: async () => {
         try {
           await axios.put(
-            `http://localhost:4000/api/users/${id}`,
+            `https://tourstay-server.onrender.com/api/users/${id}`,
             {
               withdrawMethod,
               withdrawalNumber,
@@ -165,7 +165,7 @@ const Transaction = ({ id }) => {
 
           // Update user balance and withdrawal history
           const response = await axios.put(
-            `http://localhost:4000/api/users/${id}`,
+            `https://tourstay-server.onrender.com/api/users/${id}`,
             {
               balance: user.balance - withdrawAmount,
               // totalWithdraw: user.totalWithdraw + netAmount,
