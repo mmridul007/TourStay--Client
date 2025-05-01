@@ -367,7 +367,9 @@ import {
 
 const DetailsQuick = () => {
   const { id } = useParams();
-  const { data, loading, error } = useFetch(`/quickRooms/find/${id}`);
+  const { data, loading, error } = useFetch(
+    `https://tourstay-server.onrender.com/api/quickRooms/find/${id}`
+  );
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -405,14 +407,18 @@ const DetailsQuick = () => {
       if (id) {
         try {
           setLoadingReviews(true);
-          const response = await fetch(`/roomReview/findForRoom/${id}`);
+          const response = await fetch(
+            `https://tourstay-server.onrender.com/api/roomReview/findForRoom/${id}`
+          );
           const reviewsData = await response.json();
 
           // Get user details for each review
           const reviewsWithUserDetails = await Promise.all(
             reviewsData.map(async (review) => {
               try {
-                const userResponse = await fetch(`/users/${review.userId}`);
+                const userResponse = await fetch(
+                  `https://tourstay-server.onrender.com/api/users/${review.userId}`
+                );
                 const userData = await userResponse.json();
                 return {
                   ...review,

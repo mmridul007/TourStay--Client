@@ -56,7 +56,7 @@ const Hotel = () => {
     }
   };
 
-  const { data, loading, error } = useFetch(`/hotels/find/${id}`);
+  const { data, loading, error } = useFetch(`https://tourstay-server.onrender.com/api/hotels/find/${id}`);
 
   const { dates, options } = useContext(SearchContext);
 

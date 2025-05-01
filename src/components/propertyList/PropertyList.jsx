@@ -3,7 +3,7 @@ import useFetch from "../../hooks/useFetch.js";
 import "./propertyList.css";
 
 const PropertyList = () => {
-  const { data, loading, error } = useFetch("/hotels/countByType");
+  const { data, loading, error } = useFetch("https://tourstay-server.onrender.com/api/hotels/countByType");
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);

@@ -4,7 +4,7 @@ import "./featuredProperties.css";
 
 const FeaturedProperties = () => {
   const { data, loading, error } = useFetch(
-    "/hotels/featuredHotel?featured=true&limit=14"
+    "https://tourstay-server.onrender.com/api/hotels/featuredHotel?featured=true&limit=14"
   );
 
   const [currentIndex, setCurrentIndex] = useState(0);

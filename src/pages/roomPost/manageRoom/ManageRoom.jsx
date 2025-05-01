@@ -51,7 +51,9 @@ const ManageRooms = ({ userId }) => {
     loading,
     error,
     reFetch,
-  } = useFetch(`/quickrooms/userID/${userId}`);
+  } = useFetch(
+    `https://tourstay-server.onrender.com/api/quickrooms/userID/${userId}`
+  );
   const [userRooms, setUserRooms] = useState([]);
   const [modalState, setModalState] = useState({
     add: false,
@@ -140,9 +142,12 @@ const ManageRooms = ({ userId }) => {
               const urlParts = photo.split("/");
               const filenameWithExt = urlParts[urlParts.length - 1];
               const public_id = filenameWithExt.split(".")[0];
-              return axios.post("http://localhost:4000/cloudinary/delete", {
-                public_id,
-              });
+              return axios.post(
+                "https://tourstay-server.onrender.com/cloudinary/delete",
+                {
+                  public_id,
+                }
+              );
             });
             await Promise.all(deletePromises);
           }
@@ -253,9 +258,12 @@ const ManageRooms = ({ userId }) => {
         const urlParts = photoUrl.split("/");
         const filenameWithExt = urlParts[urlParts.length - 1];
         const public_id = filenameWithExt.split(".")[0];
-        await axios.post("http://localhost:4000/cloudinary/delete", {
-          public_id,
-        });
+        await axios.post(
+          "https://tourstay-server.onrender.com/cloudinary/delete",
+          {
+            public_id,
+          }
+        );
       }
 
       const newPhotos = [...uploadedPhotos];
@@ -313,7 +321,7 @@ const ManageRooms = ({ userId }) => {
             const urlParts = photo.split("/");
             const filenameWithExt = urlParts[urlParts.length - 1];
             const public_id = filenameWithExt.split(".")[0];
-            return axios.post("http://localhost:4000/cloudinary/delete", {
+            return axios.post("http://localhost:4000/delete", {
               public_id,
             });
           });

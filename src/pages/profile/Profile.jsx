@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 
 const Profile = () => {
   const { id } = useParams();
-  const { data: user } = useFetch(`/users/${id}`);
+  const { data: user } = useFetch(`https://tourstay-server.onrender.com/api/users/${id}`);
   const { user: currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -92,7 +92,7 @@ const Profile = () => {
 
   const updateUserInfo = async (userData) => {
     try {
-      const response = await axios.put(`/users/${id}`, userData);
+      const response = await axios.put(`https://tourstay-server.onrender.com/api/users/${id}`, userData);
       return response.data;
     } catch (err) {
       setError("Failed to update user information. Please try again.");

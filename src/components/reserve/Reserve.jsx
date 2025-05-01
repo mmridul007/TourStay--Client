@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import HotelConfirmation from "../hotelConfirmation/HotelConfirmation";
 
 const Reserve = ({ setOpen, hotelId, days, user }) => {
-  const { data, loading, error } = useFetch(`/hotels/room/${hotelId}`);
+  const { data, loading, error } = useFetch(`https://tourstay-server.onrender.com/api/hotels/room/${hotelId}`);
   const [selectedRooms, setSelectedRooms] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,7 +26,7 @@ const Reserve = ({ setOpen, hotelId, days, user }) => {
   useEffect(() => {
     const fetchHotelData = async () => {
       try {
-        const res = await axios.get(`/hotels/find/${hotelId}`);
+        const res = await axios.get(`https://tourstay-server.onrender.com/api/hotels/find/${hotelId}`);
         setHotelData(res.data);
       } catch (err) {
         console.error("Error fetching hotel data:", err);

@@ -22,7 +22,7 @@ const FeaturedSlider = () => {
   const citiesQueryString = cities.join(",").toLowerCase();
 
   const { data, loading, error } = useFetch(
-    `/hotels/countByCity?cities=${citiesQueryString}`
+    `https://tourstay-server.onrender.com/api/hotels/countByCity?cities=${citiesQueryString}`
   );
 
   useEffect(() => {
