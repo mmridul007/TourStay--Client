@@ -23,7 +23,7 @@ const List = () => {
   const maxPrice = max ? Number(max) : 100000;
 
   const { data, loading, error, reFetch } = useFetch(
-    `/hotels?city=${destination}&min=${minPrice}&max=${maxPrice}`
+    `https://tourstay-server.onrender.com/api/hotels?city=${destination}&min=${minPrice}&max=${maxPrice}`
   );
 
   useEffect(() => {

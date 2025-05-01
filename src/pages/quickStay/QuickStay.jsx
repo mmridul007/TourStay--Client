@@ -51,7 +51,7 @@ const QuickStay = () => {
       setRooms(response.data);
       setCity(trimmedCity);
 
-      // ✅ Save search results and city in sessionStorage
+      // Save search results and city in sessionStorage
       sessionStorage.setItem("searchResults", JSON.stringify(response.data));
       sessionStorage.setItem("searchedCity", trimmedCity);
 
