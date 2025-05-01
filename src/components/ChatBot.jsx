@@ -45,7 +45,7 @@
 
 // export default ChatBot;
 
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Chatbot } from "react-chatbot-kit";
 import "react-chatbot-kit/build/main.css";
 
@@ -58,7 +58,26 @@ import { SearchContext } from "./context/SearchContext";
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { dispatch } = useContext(SearchContext);
+
+  // Check if the device is mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Initial check
+    checkIfMobile();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", checkIfMobile);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", checkIfMobile);
+    };
+  }, []);
 
   // Create a custom ActionProvider class that includes dispatch
   const CustomActionProvider = (function () {
@@ -74,7 +93,7 @@ const ChatBot = () => {
     <div className="chatbot-container">
       {!isOpen && (
         <button className="chat-button" onClick={() => setIsOpen(true)}>
-          Chat with us
+          {isMobile ? "Chat" : "Chat with us"}
         </button>
       )}
 

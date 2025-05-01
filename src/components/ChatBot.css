@@ -14,6 +14,11 @@
   font-size: 16px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
 }
 
 .chatbot-wrapper {
@@ -178,4 +183,84 @@
 .guest-count {
   font-size: 16px;
   font-weight: bold;
+}
+
+.room-card,
+.search-btn {
+  transition: all 0.3s ease;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .chatbot-container {
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .chat-button {
+    padding: 10px 16px;
+    font-size: 14px;
+    max-width: 150px;
+  }
+
+  .chatbot-wrapper {
+    width: 300px;
+    height: 500px;
+    max-width: 90vw;
+    max-height: 80vh;
+  }
+
+  .chatbot-header h3 {
+    font-size: 16px;
+  }
+
+  .quick-stay-container {
+    padding: 10px;
+  }
+
+  .search-bar {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .city-input {
+    border-radius: 4px;
+    border-right: 2px solid #ddd;
+    margin-bottom: 10px;
+  }
+
+  .search-btn {
+    border-radius: 4px;
+    width: 100%;
+  }
+
+  .rooms-grid {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .room-card {
+    flex-direction: column;
+  }
+
+  .room-image {
+    height: 200px;
+  }
+
+  .room-details h3 {
+    font-size: 18px;
+  }
+
+  .room-info span {
+    font-size: 14px;
+  }
+
+  .details-btn {
+    width: 100%;
+  }
+
+  .no-rooms-message {
+    width: 100%;
+    font-size: 14px;
+  }
 }
