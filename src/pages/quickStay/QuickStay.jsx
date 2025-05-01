@@ -79,6 +79,13 @@ const QuickStay = () => {
     });
   };
 
+  // Handle key press event for search input
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -89,13 +96,16 @@ const QuickStay = () => {
               type="text"
               value={city}
               onChange={(e) => setCity(e.target.value)}
+              onKeyPress={handleKeyPress}
               placeholder="Enter city name"
               className="city-input"
+              aria-label="City name"
             />
             <button
               onClick={() => handleSearch()}
               disabled={loading}
               className="search-btn"
+              aria-label="Search rooms"
             >
               {loading ? "Searching..." : "Search Rooms"}
             </button>
@@ -116,8 +126,9 @@ const QuickStay = () => {
                   {room.photos && room.photos.length > 0 ? (
                     <img
                       src={room.photos[0]}
-                      alt={room.title}
+                      alt={`${room.title} room view`}
                       className="room-thumbnail"
+                      loading="lazy"
                     />
                   ) : (
                     <div className="no-image-placeholder">No Image</div>
@@ -146,6 +157,7 @@ const QuickStay = () => {
                     <button
                       className="details-btn"
                       onClick={() => handleRoomDetails(room._id)}
+                      aria-label={`See details for ${room.title}`}
                     >
                       See Details
                     </button>

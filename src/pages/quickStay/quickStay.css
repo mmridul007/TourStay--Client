@@ -128,16 +128,16 @@
   flex-grow: 1;
 }
 
-.price{
+.price {
   color: red;
   font-weight: 700;
 }
 
-.available{
+.available {
   color: rgb(4, 193, 4);
   font-weight: 600;
 }
-.notAvailable{
+.notAvailable {
   color: rgb(193, 5, 5);
   font-weight: 600;
 }
@@ -160,4 +160,56 @@
 
 .details-btn:hover {
   background-color: #1058be;
+}
+
+/* Responsive styles for mobile devices */
+@media screen and (max-width: 768px) {
+  .search-bar {
+    width: 95%;
+    flex-direction: column;
+  }
+
+  .city-input {
+    border-right: 2px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+
+  .search-btn {
+    border-radius: 4px;
+    width: 100%;
+  }
+
+  .rooms-grid {
+    width: 95%;
+    grid-template-columns: 1fr;
+  }
+
+  .no-rooms-message {
+    width: 95%;
+  }
+
+  .room-image {
+    height: 200px;
+  }
+
+  .quick-stay-container {
+    padding: 10px;
+  }
+}
+
+/* Medium-sized devices */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .search-bar {
+    width: 85%;
+  }
+
+  .rooms-grid {
+    width: 85%;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  .no-rooms-message {
+    width: 85%;
+  }
 }
