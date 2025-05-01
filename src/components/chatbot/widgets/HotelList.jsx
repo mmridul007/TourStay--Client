@@ -20,7 +20,7 @@ const HotelList = (props) => {
       {displayedHotels.map((hotel) => (
         <div key={hotel._id} className="hotel-card">
           <div className="hotel-name">🏨 {hotel.name}</div>
-          <div className="hotel-rating">⭐ {hotel.rating} stars</div>
+          <div className="hotel-rating">⭐ {hotel.rating} star Reviews</div>
           <div className="hotel-price">💰 {hotel.cheapestPrice} BDT/night</div>
           <div className="hotel-location">📍 {hotel.address}</div>
           <button

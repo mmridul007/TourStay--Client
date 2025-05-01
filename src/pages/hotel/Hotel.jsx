@@ -56,7 +56,9 @@ const Hotel = () => {
     }
   };
 
-  const { data, loading, error } = useFetch(`https://tourstay-server.onrender.com/api/hotels/find/${id}`);
+  const { data, loading, error } = useFetch(
+    `https://tourstay-server.onrender.com/api/hotels/find/${id}`
+  );
 
   const { dates, options } = useContext(SearchContext);
 
@@ -396,7 +398,6 @@ const Hotel = () => {
               </div>
             </div>
           </div>
-          <Footer />
         </div>
       )}
       {openModal && (
@@ -450,6 +451,8 @@ const Hotel = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      <Footer />
     </div>
   );
 };
