@@ -70,14 +70,17 @@ const Navbar = () => {
       message: "Are you sure you want to log out?",
       onConfirm: () => {
         localStorage.removeItem("user");
-        toast.success("You have been logged out.");
-        window.location.reload(); // Or redirect to login page
+        toast.info("You have been logged out.");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       },
       onCancel: () => {
         toast.info("Logout canceled.");
       },
     });
   };
+  
 
   const handleLogin = () => {
     navigate("/login");

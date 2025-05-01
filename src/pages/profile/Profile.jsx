@@ -172,21 +172,21 @@ const Profile = () => {
           <div className="userInfo">
             <h2>Full Name: {user?.fullName || "Not provided"}</h2>
             <span>
-              <span className="title">Username:</span> {user?.username}
+              <span className="title1">Username:</span> {user?.username}
             </span>{" "}
             <br />
             <span>
-              <span className="title">Lives in:</span>{" "}
+              <span className="title1">Lives in:</span>{" "}
               {user?.city || "Not provided"}
             </span>{" "}
             <br />
             <span>
-              <span className="title">Phone:</span>{" "}
+              <span className="title1">Phone:</span>{" "}
               {user?.phone || "Not provided"}
             </span>{" "}
             <br />
             <span>
-              <span className="title">E-mail:</span> {user?.email}
+              <span className="title1">E-mail:</span> {user?.email}
             </span>
           </div>
         </div>

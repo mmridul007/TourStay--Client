@@ -153,7 +153,7 @@ const ManageRooms = ({ userId }) => {
           }
 
           setUserRooms((prev) => prev.filter((room) => room._id !== roomId));
-          toast.success("Room deleted successfully!");
+          toast.info("Room deleted successfully!");
         } catch (err) {
           toast.error("Failed to delete room. Please try again.");
         } finally {
