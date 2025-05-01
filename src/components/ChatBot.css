@@ -195,6 +195,9 @@
   .chatbot-container {
     bottom: 10px;
     right: 10px;
+    left: auto;
+    width: auto;
+    max-width: calc(100vw - 20px);
   }
 
   .chat-button {
@@ -204,9 +207,9 @@
   }
 
   .chatbot-wrapper {
-    width: 300px;
+    width: 100%;
+    max-width: 380px;
     height: 500px;
-    max-width: 90vw;
     max-height: 80vh;
   }
 
@@ -262,5 +265,13 @@
   .no-rooms-message {
     width: 100%;
     font-size: 14px;
+  }
+  .close-button{
+    padding: 2px 5px;
+  }
+
+  .react-chatbot-kit-chat-container {
+    width: 100% !important;
+    max-width: 100%;
   }
 }

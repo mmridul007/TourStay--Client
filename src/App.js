@@ -44,7 +44,7 @@ function App() {
         <Route path="/orderConfirmation" element={<OrderConfirmation />} />
         <Route path="/policy" element={<Policy />} />
       </Routes>
-      <ChatBot/>
+      <ChatBot />
     </BrowserRouter>
   );
 }
