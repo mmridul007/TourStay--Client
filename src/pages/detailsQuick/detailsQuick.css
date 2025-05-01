@@ -1,7 +1,7 @@
 /* Main Container Styles */
 .details-container {
-  width: 85%;
-  max-width: 1300px;
+  width: 100%;
+  max-width: 1024px;
   margin: 0 auto;
   padding: 20px 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
