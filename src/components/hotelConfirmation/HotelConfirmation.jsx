@@ -164,7 +164,7 @@ const HotelConfirmation = ({
       const bookingData = {
         hotelId: hotelData._id,
         customerId: customerId || "guest",
-        customerName: customerInfo.fullName,
+        customerName: customerInfo.name,
         customerEmail: customerInfo.email,
         customerPhone: customerInfo.phone,
         checkIn: startDate,

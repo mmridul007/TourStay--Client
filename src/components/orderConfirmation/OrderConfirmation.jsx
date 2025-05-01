@@ -55,7 +55,7 @@ const OrderConfirmation = ({
       );
       if (response.data) {
         setCustomerInfo({
-          name: response.data.username || "",
+          name: response.data.fullName || "",
           email: response.data.email || "",
           phone: response.data.phone || "",
         });
