@@ -69,7 +69,16 @@ const Header = ({ type }) => {
               Enjoy exclusive deals and special rates when you book directly.
             </p>
 
-            {!user && <button className="headerBtn">Sign in / Register</button>}
+            {!user && (
+              <button
+                onClick={() => {
+                  navigate("/login");
+                }}
+                className="headerBtn"
+              >
+                Sign in / Register
+              </button>
+            )}
             <div className="headerSearch">
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faBed} className="headerIcon" />

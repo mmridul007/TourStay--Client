@@ -93,7 +93,7 @@ const ChatBot = () => {
     <div className="chatbot-container">
       {!isOpen && (
         <button className="chat-button" onClick={() => setIsOpen(true)}>
-          {isMobile ? "Chat" : "Chat with us"}
+          {isMobile ? "Chat" : "Chat with Bot"}
         </button>
       )}
 

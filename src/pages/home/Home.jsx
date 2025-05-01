@@ -18,8 +18,8 @@ const Home = () => {
         <PropertyList />
         <h1 className="homeTitle">Homes guests love</h1>
         <FeaturedProperties />
-        <MailList />
       </div>
+      <MailList />
       <Footer />
     </div>
   );
