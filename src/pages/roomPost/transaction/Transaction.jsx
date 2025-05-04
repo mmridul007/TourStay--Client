@@ -9,9 +9,9 @@ const Transaction = ({ id }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showSetupModal, setShowSetupModal] = useState(false);
-  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
-  const [showCustomerModal, setShowCustomerModal] = useState(false);
+  const [showSetupDialog, setShowSetupDialog] = useState(false);
+  const [showWithdrawDialog, setShowWithdrawDialog] = useState(false);
+  const [showCustomerDialog, setShowCustomerDialog] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [withdrawMethod, setWithdrawMethod] = useState("");
   const [withdrawalNumber, setWithdrawalNumber] = useState("");
@@ -22,7 +22,7 @@ const Transaction = ({ id }) => {
   const [currentOrderPage, setCurrentOrderPage] = useState(1);
   const [orderDetails, setOrderDetails] = useState({});
 
-  const historyPerPage = 6; // Changed from 5 to 6 as requested
+  const historyPerPage = 6;
   const ordersPerPage = 8;
   const platformFeePercentage = 7;
   const platformFeePerOrder = 30; // BDT subtracted from each order (hidden from user)
@@ -127,7 +127,7 @@ const Transaction = ({ id }) => {
             withdrawMethod,
             withdrawalNumber,
           });
-          setShowSetupModal(false);
+          setShowSetupDialog(false);
           toast.success("Withdrawal method set up successfully!");
         } catch (err) {
           toast.error("Failed to set up withdrawal method");
@@ -168,7 +168,6 @@ const Transaction = ({ id }) => {
             `https://tourstay-server.onrender.com/api/users/${id}`,
             {
               balance: user.balance - withdrawAmount,
-              // totalWithdraw: user.totalWithdraw + netAmount,
               withdrawalStatus: "pending",
               withdrawalHoldAmount: netAmount,
               withdrawHistory: [
@@ -187,7 +186,7 @@ const Transaction = ({ id }) => {
             { amount: netAmount, date: new Date() },
             ...withdrawalHistory,
           ]);
-          setShowWithdrawModal(false);
+          setShowWithdrawDialog(false);
           setWithdrawAmount(0);
           toast.success("Withdrawal request submitted successfully!");
         } catch (err) {
@@ -266,12 +265,12 @@ const Transaction = ({ id }) => {
 
       {/* Action Buttons */}
       <div className="action-buttons">
-        <button className="setup-btn" onClick={() => setShowSetupModal(true)}>
+        <button className="setup-btn" onClick={() => setShowSetupDialog(true)}>
           Set Up Withdrawal Method
         </button>
         <button
           className="withdraw-btn"
-          onClick={() => setShowWithdrawModal(true)}
+          onClick={() => setShowWithdrawDialog(true)}
           disabled={!user.withdrawMethod || availableBalance <= 0}
         >
           Withdraw Funds
@@ -387,7 +386,7 @@ const Transaction = ({ id }) => {
                             className="info-btn"
                             onClick={() => {
                               setSelectedOrder(order);
-                              setShowCustomerModal(true);
+                              setShowCustomerDialog(true);
                             }}
                           >
                             Customer Info
@@ -432,11 +431,11 @@ const Transaction = ({ id }) => {
         </div>
       </div>
 
-      {/* Set Up Modal */}
-      {showSetupModal && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <div className="modal-header">
+      {/* Set Up Dialog */}
+      {showSetupDialog && (
+        <div className="ts-dialog-overlay">
+          <div className="ts-dialog">
+            <div className="ts-dialog-header">
               <h3>Set Up Withdrawal Method</h3>
             </div>
             <form onSubmit={handleSetupSubmit}>
@@ -463,11 +462,11 @@ const Transaction = ({ id }) => {
                   required
                 />
               </div>
-              <div className="modal-actions">
+              <div className="ts-dialog-actions">
                 <button
                   type="button"
                   className="cancel-btn"
-                  onClick={() => setShowSetupModal(false)}
+                  onClick={() => setShowSetupDialog(false)}
                 >
                   Cancel
                 </button>
@@ -480,11 +479,11 @@ const Transaction = ({ id }) => {
         </div>
       )}
 
-      {/* Withdraw Modal */}
-      {showWithdrawModal && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <div className="modal-header">
+      {/* Withdraw Dialog */}
+      {showWithdrawDialog && (
+        <div className="ts-dialog-overlay">
+          <div className="ts-dialog">
+            <div className="ts-dialog-header">
               <h3>Withdraw Funds</h3>
             </div>
             <form onSubmit={handleWithdrawSubmit}>
@@ -560,11 +559,11 @@ const Transaction = ({ id }) => {
                   </button>
                 </div>
               </div>
-              <div className="modal-actions">
+              <div className="ts-dialog-actions">
                 <button
                   type="button"
                   className="cancel-btn"
-                  onClick={() => setShowWithdrawModal(false)}
+                  onClick={() => setShowWithdrawDialog(false)}
                 >
                   Cancel
                 </button>
@@ -583,12 +582,18 @@ const Transaction = ({ id }) => {
         </div>
       )}
 
-      {/* Customer Info Modal */}
-      {showCustomerModal && selectedOrder && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <div className="modal-header">
+      {/* Customer Info Dialog */}
+      {showCustomerDialog && selectedOrder && (
+        <div className="ts-dialog-overlay">
+          <div className="ts-dialog">
+            <div className="ts-dialog-header">
               <h3>Customer Information</h3>
+              <button
+                className="ts-close-btn"
+                onClick={() => setShowCustomerDialog(false)}
+              >
+                x
+              </button>
             </div>
             <div className="customer-info">
               <div className="info-row">
@@ -626,14 +631,6 @@ const Transaction = ({ id }) => {
                 <span className={`status ${selectedOrder.status}`}>
                   {selectedOrder.status}
                 </span>
-              </div>
-              <div className="modal-actions">
-                <button
-                  className="close-btn1"
-                  onClick={() => setShowCustomerModal(false)}
-                >
-                  x
-                </button>
               </div>
             </div>
           </div>
