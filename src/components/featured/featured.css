@@ -1,3 +1,8 @@
+.featuredContainer {
+  position: relative;
+  width: 100%;
+}
+
 .featuredSlider {
   width: 100%;
   max-width: 1024px;
@@ -38,6 +43,12 @@
   height: 250px;
   padding: 0 10px;
   box-sizing: border-box;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.featuredItem:hover {
+  transform: scale(1.02);
 }
 
 .featuredImg {
@@ -92,11 +103,135 @@
   background-color: rgba(255, 255, 255, 0.9);
 }
 
+/* City Hotels Modal Styles */
+.cityHotelModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.modalContent {
+  position: relative;
+  background-color: white;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  color: #333;
+  font-size: 22px;
+}
+
+.closeModalBtn {
+  border: none;
+  background: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #666;
+}
+
+.closeModalBtn:hover {
+  color: #333;
+}
+
+.modalBody {
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(80vh - 70px);
+}
+
+.modalLoading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  color: #666;
+}
+
+.noHotels {
+  text-align: center;
+  color: #666;
+  padding: 20px 0;
+}
+
+.hotelList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.hotelItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.hotelItem:hover {
+  background-color: #f9f9f9;
+}
+
+.hotelItem:last-child {
+  border-bottom: none;
+}
+
+.hotelDetails h3 {
+  margin: 0 0 5px;
+  color: #333;
+  font-size: 18px;
+}
+
+.hotelDetails p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.hotelPrice {
+  font-weight: bold;
+  color: #0071c2;
+  font-size: 16px;
+}
+
 /* Responsive Styles */
 @media (max-width: 1024px) {
   .featuredSlider {
     max-width: 100%;
-    
   }
 }
 
@@ -116,6 +251,14 @@
   .loading,
   .error {
     height: 200px;
+  }
+
+  .modalContent {
+    width: 95%;
+  }
+
+  .modalHeader h2 {
+    font-size: 20px;
   }
 }
 
@@ -140,5 +283,13 @@
   .loading,
   .error {
     height: 180px;
+  }
+
+  .hotelDetails h3 {
+    font-size: 16px;
+  }
+
+  .hotelPrice {
+    font-size: 14px;
   }
 }

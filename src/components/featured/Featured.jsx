@@ -5,6 +5,9 @@ import "./featured.css";
 const FeaturedSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [cityHotels, setCityHotels] = useState([]);
+  const [loadingHotels, setLoadingHotels] = useState(false);
 
   const cities = [
     "Dhaka",
@@ -80,7 +83,7 @@ const FeaturedSlider = () => {
   const handleMouseEnter = () => setIsAutoPlaying(false);
   const handleMouseLeave = () => setIsAutoPlaying(true);
 
-  // City images - replace with your actual image URLs
+  // City images
   const cityImages = {
     dhaka:
       "https://media.istockphoto.com/id/1497696859/photo/chittagong-city-skyline-drone-view-of-chittagong-city.jpg?s=612x612&w=0&k=20&c=3LGbUKRY8K3FRMZNgvJNutXW2iVUu7_xa8pxp2N7ItE=",
@@ -103,52 +106,132 @@ const FeaturedSlider = () => {
       "https://upload.wikimedia.org/wikipedia/commons/9/98/Rangpur_Town_Hall.jpg",
   };
 
-  return (
-    <div
-      className="featuredSlider"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      {loading ? (
-        <div className="loading">Loading Please Wait!!</div>
-      ) : error ? (
-        <div className="error">Something went wrong!</div>
-      ) : (
-        <>
-          <div
-            className="featuredSliderTrack"
-            style={{
-              transform: `translateX(-${currentIndex * (100 / itemsToShow)}%)`,
-            }}
-          >
-            {cities.map((city, index) => (
-              <div
-                className="featuredItem"
-                key={index}
-                style={{ flex: `0 0 ${100 / itemsToShow}%` }}
-              >
-                <img
-                  src={cityImages[city.toLowerCase()]}
-                  alt={city}
-                  className="featuredImg"
-                />
-                <div className="featuredTitles">
-                  <h1>{city}</h1>
-                  <h2>{data && data[index] ? data[index] : 0} properties</h2>
-                </div>
-              </div>
-            ))}
-          </div>
+  // Handle city card click
+  const handleCityClick = async (city) => {
+    setSelectedCity(city);
+    setLoadingHotels(true);
 
-          <div className="sliderControls">
-            <button className="sliderControlBtn prevBtn" onClick={prevSlide}>
-              &lt;
-            </button>
-            <button className="sliderControlBtn nextBtn" onClick={nextSlide}>
-              &gt;
-            </button>
+    try {
+      const response = await fetch(
+        `https://tourstay-server.onrender.com/api/hotels/byCity/${city.toLowerCase()}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch hotels");
+      }
+      const data = await response.json();
+      setCityHotels(data);
+    } catch (err) {
+      console.error("Error fetching hotels:", err);
+      setCityHotels([]);
+    } finally {
+      setLoadingHotels(false);
+    }
+  };
+
+  const closeModal = () => {
+    setSelectedCity(null);
+    setCityHotels([]);
+  };
+
+  // Navigate to hotel detail page
+  const navigateToHotel = (hotelId) => {
+    window.location.href = `/hotels/${hotelId}`;
+  };
+
+  return (
+    <div className="featuredContainer">
+      <div
+        className="featuredSlider"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {loading ? (
+          <div className="loading">Loading Please Wait!!</div>
+        ) : error ? (
+          <div className="error">Something went wrong!</div>
+        ) : (
+          <>
+            <div
+              className="featuredSliderTrack"
+              style={{
+                transform: `translateX(-${
+                  currentIndex * (100 / itemsToShow)
+                }%)`,
+              }}
+            >
+              {cities.map((city, index) => (
+                <div
+                  className="featuredItem"
+                  key={index}
+                  style={{ flex: `0 0 ${100 / itemsToShow}%` }}
+                  onClick={() => handleCityClick(city)}
+                >
+                  <img
+                    src={cityImages[city.toLowerCase()]}
+                    alt={city}
+                    className="featuredImg"
+                  />
+                  <div className="featuredTitles">
+                    <h1>{city}</h1>
+                    <h2>{data && data[index] ? data[index] : 0} properties</h2>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="sliderControls">
+              <button className="sliderControlBtn prevBtn" onClick={prevSlide}>
+                &lt;
+              </button>
+              <button className="sliderControlBtn nextBtn" onClick={nextSlide}>
+                &gt;
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* City Hotels Modal */}
+      {selectedCity && (
+        <div className="cityHotelModal">
+          <div className="modalOverlay" onClick={closeModal}></div>
+          <div className="modalContent">
+            <div className="modalHeader">
+              <h2>Hotels in {selectedCity}</h2>
+              <button className="closeModalBtn" onClick={closeModal}>
+                ×
+              </button>
+            </div>
+            <div className="modalBody">
+              {loadingHotels ? (
+                <div className="modalLoading">Loading hotels...</div>
+              ) : cityHotels.length > 0 ? (
+                <ul className="hotelList">
+                  {cityHotels.map((hotel) => (
+                    <li
+                      key={hotel._id}
+                      onClick={() => navigateToHotel(hotel._id)}
+                    >
+                      <div className="hotelItem">
+                        <div className="hotelDetails">
+                          <h3>{hotel.name}</h3>
+                          <p>{hotel.address}</p>
+                        </div>
+                        <div className="hotelPrice">
+                          <span>From BDT {hotel.cheapestPrice}</span>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="noHotels">
+                  No hotels found in {selectedCity}
+                </div>
+              )}
+            </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

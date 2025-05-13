@@ -1,12 +1,20 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch.js";
 import "./propertyList.css";
 
 const PropertyList = () => {
-  const { data, loading, error } = useFetch("https://tourstay-server.onrender.com/api/hotels/countByType");
+  const { data, loading, error } = useFetch(
+    "https://tourstay-server.onrender.com/api/hotels/countByType"
+  );
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedType, setSelectedType] = useState(null);
+  const [hotelsOfType, setHotelsOfType] = useState([]);
+  const [loadingHotels, setLoadingHotels] = useState(false);
+  const navigate = useNavigate();
 
   // Check if the screen is mobile
   useEffect(() => {
@@ -50,18 +58,66 @@ const PropertyList = () => {
     }
   }, [currentSlide, isMobile]);
 
+  // Fetch hotels of a specific type when a card is clicked
+  const fetchHotelsByType = async (type) => {
+    setLoadingHotels(true);
+    try {
+      // Use the singular form of the type for API call
+      const singularType = type.endsWith("s") ? type.slice(0, -1) : type;
+
+      const response = await fetch(
+        `https://tourstay-server.onrender.com/api/hotels/getHotelByType?type=${singularType}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setHotelsOfType(data);
+    } catch (err) {
+      console.error("Error fetching hotels:", err);
+      setHotelsOfType([]);
+    } finally {
+      setLoadingHotels(false);
+    }
+  };
+
+  const handleCardClick = (type) => {
+    setSelectedType(type);
+    fetchHotelsByType(type);
+    setShowModal(true);
+  };
+
+  const handleHotelClick = (hotelId) => {
+    navigate(`/hotels/${hotelId}`);
+    setShowModal(false);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedType(null);
+    setHotelsOfType([]);
+  };
+
   return (
     <div className="pListContainer">
       <div className="pList">
         {loading ? (
-          "Loading Please Wait!!"
+          <div className="loadingMessage">Loading Please Wait!!</div>
+        ) : error ? (
+          <div className="errorMessage">Error loading property types!</div>
         ) : (
           <>
             <div ref={sliderRef} className="pListSlider">
               {data &&
                 data.length > 0 &&
                 data.map((item, i) => (
-                  <div key={i} className="pListItem">
+                  <div
+                    key={i}
+                    className="pListItem"
+                    onClick={() => handleCardClick(item.type)}
+                  >
                     <img
                       src={images[i] || images[0]}
                       alt={item.type}
@@ -89,6 +145,62 @@ const PropertyList = () => {
           </>
         )}
       </div>
+
+      {/* Modal for displaying hotels of selected type */}
+      {showModal && (
+        <div className="modalOverlay" onClick={closeModal}>
+          <div className="modalContent" onClick={(e) => e.stopPropagation()}>
+            <div className="modalHeader">
+              <h2>{selectedType}</h2>
+              <button className="closeBtn" onClick={closeModal}>
+                ×
+              </button>
+            </div>
+            <div className="modalBody">
+              {loadingHotels ? (
+                <div className="loadingMessage">Loading hotels...</div>
+              ) : hotelsOfType.length === 0 ? (
+                <div className="noHotelsMessage">
+                  No {selectedType} available at the moment.
+                </div>
+              ) : (
+                <div className="hotelsList">
+                  {hotelsOfType.map((hotel) => (
+                    <div key={hotel._id} className="hotelCard">
+                      <div className="hotelInfo">
+                        <h3
+                          className="hotelName"
+                          onClick={() => handleHotelClick(hotel._id)}
+                        >
+                          {hotel.name}
+                        </h3>
+                        <p className="hotelCity">{hotel.city}</p>
+                        <p className="hotelPrice">
+                          Starting from BDT {hotel.cheapestPrice}
+                        </p>
+                        {/* {hotel.rating && (
+                          <div className="hotelRating">
+                            <span className="ratingScore">{hotel.rating}</span>
+                            <span className="ratingText">
+                              {hotel.rating >= 4.5
+                                ? "Excellent"
+                                : hotel.rating >= 4
+                                ? "Very Good"
+                                : hotel.rating >= 3.5
+                                ? "Good"
+                                : "Average"}
+                            </span>
+                          </div>
+                        )} */}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

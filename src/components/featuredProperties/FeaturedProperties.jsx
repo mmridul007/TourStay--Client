@@ -155,16 +155,21 @@ const FeaturedProperties = () => {
             <>
               {data &&
                 data.map((item) => (
-                  <div key={item._id} className="fpItem">
-                    <img
-                      src={item.photos[0]}
-                      alt=""
-                      className="fpImg"
-                    />
+                  <div
+                    key={item._id}
+                    onClick={() => {
+                      window.location.href = `/hotels/${item._id}`;
+                    }}
+                    className="fpItem"
+                  >
+                    <img src={item.photos[0]} alt="" className="fpImg" />
                     <span className="fpName">{item.name}</span>
-                    <span className="fpCity">Location: <span className="cityName">{item.city}</span></span>
+                    <span className="fpCity">
+                      Location: <span className="cityName">{item.city}</span>
+                    </span>
                     <span className="fpPrice">
-                      Starting from <span className="price">{item.cheapestPrice}</span> Taka
+                      Starting from{" "}
+                      <span className="price">{item.cheapestPrice}</span> Taka
                     </span>
                     <div className="fpRating">
                       <button>{item.rating}</button>

@@ -26,6 +26,12 @@
   overflow: hidden;
   cursor: pointer;
   min-width: calc(20% - 16px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pListItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .pListImg {
@@ -75,6 +81,109 @@
   background-color: rgba(255, 255, 255, 0.9);
 }
 
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  text-transform: capitalize;
+  color: #003580;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+}
+
+.closeBtn:hover {
+  color: #333;
+}
+
+.modalBody {
+  padding: 20px;
+}
+
+.loadingMessage,
+.noHotelsMessage {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.hotelsList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.hotelCard {
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: background-color 0.2s ease;
+}
+
+.hotelCard:hover {
+  background-color: #f0f0f0;
+}
+
+.hotelInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hotelName {
+  margin: 0;
+  font-size: 16px;
+  color: #0071c2;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.hotelName:hover {
+  color: #003580;
+  text-decoration: underline;
+}
+
+.hotelPrice {
+  margin: 0;
+  font-weight: 500;
+  color: #008009;
+}
+
 /* Media queries for mobile */
 @media screen and (max-width: 768px) {
   .pListContainer {
@@ -94,6 +203,17 @@
   .pListItem {
     min-width: calc(50% - 5px); /* Each item takes up 50% minus gap */
     flex: 0 0 calc(50% - 5px);
+  }
+
+  .modalContent {
+    width: 95%;
+    max-height: 70vh;
+  }
+
+  .hotelInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
   }
 }
 
