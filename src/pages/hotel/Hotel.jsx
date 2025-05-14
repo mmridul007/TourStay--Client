@@ -544,6 +544,10 @@ const Hotel = () => {
   const dateRef = useRef(null);
   const optionsRef = useRef(null);
 
+  const { data, loading, error } = useFetch(
+    `https://tourstay-server.onrender.com/api/hotels/find/${id}`
+  );
+
   // Handle click outside dropdowns
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -561,17 +565,37 @@ const Hotel = () => {
     };
   }, []);
 
+  // Update search context when dates change
+  useEffect(() => {
+    // Only update if we have valid date ranges
+    if (dateState?.[0]?.startDate && dateState?.[0]?.endDate) {
+      dispatch({
+        type: "NEW_SEARCH",
+        payload: {
+          city: data?.city || "",
+          dates: dateState,
+          options: optionsState,
+        },
+      });
+    }
+  }, [dateState, optionsState, data?.city, dispatch]);
+
   const handleClick = () => {
     if (user) {
+      // Update context one final time before opening the modal
+      dispatch({
+        type: "NEW_SEARCH",
+        payload: {
+          city: data?.city || "",
+          dates: dateState,
+          options: optionsState,
+        },
+      });
       setOpenModal(true);
     } else {
       navigate("/login");
     }
   };
-
-  const { data, loading, error } = useFetch(
-    `https://tourstay-server.onrender.com/api/hotels/find/${id}`
-  );
 
   // Handle option changes
   const handleOption = (name, operation) => {
@@ -582,6 +606,11 @@ const Hotel = () => {
         [name]: newValue >= 0 ? newValue : 0,
       };
     });
+  };
+
+  // Handle date changes
+  const handleDateChange = (item) => {
+    setDateState([item.selection]);
   };
 
   // Update search context when date or options change
@@ -914,7 +943,7 @@ const Hotel = () => {
                       <div className="datePickerDropdown">
                         <DateRange
                           editableDateInputs={true}
-                          onChange={(item) => setDateState([item.selection])}
+                          onChange={handleDateChange}
                           moveRangeOnFirstSelection={false}
                           ranges={dateState}
                           minDate={new Date()}
