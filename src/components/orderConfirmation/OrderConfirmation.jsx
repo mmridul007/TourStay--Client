@@ -82,7 +82,7 @@ const OrderConfirmation = ({
       const validPromoCodes = {
         WELCOME10: 10,
         SUMMER20: 20,
-        WEEKEND15: 15,
+        STAY20: 20,
       };
 
       if (validPromoCodes[promoCode]) {
