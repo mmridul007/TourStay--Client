@@ -6,6 +6,7 @@
   color: #333;
   background-color: #fff;
   margin-bottom: 10px;
+  box-sizing: border-box;
 }
 
 .contact-header {
@@ -45,7 +46,7 @@
 
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 30px;
   margin-bottom: 50px;
 }
@@ -55,7 +56,10 @@
   border-radius: 8px;
   padding: 30px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  min-width: 0;
 }
 
 .contact-card:hover {
@@ -70,6 +74,7 @@
 }
 
 .icon {
+  flex-shrink: 0;
   width: 40px;
   height: 40px;
   margin-right: 15px;
@@ -104,13 +109,14 @@
 
 .info-item {
   margin-bottom: 10px;
+  overflow-wrap: anywhere;
 }
 
 .label {
   font-weight: 600;
   margin-right: 8px;
   display: inline-block;
-  width: 100px;
+  width: 120px;
 }
 
 .contact-info a {
@@ -124,21 +130,148 @@
   text-decoration: underline;
 }
 
-/* Responsive adjustments */
+/* ---------- Developer section ---------- */
+.developer-section {
+  margin-bottom: 20px;
+}
+
+.developer-heading {
+  font-size: 28px;
+  font-weight: 600;
+  color: #0066cc;
+  margin: 0 0 20px;
+  padding: 0 15px;
+}
+
+.developer-card {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #0066cc;
+}
+
+.developer-photo {
+  flex-shrink: 0;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow:
+    0 0 0 3px #0066cc,
+    0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.developer-details {
+  min-width: 0;
+  flex: 1;
+}
+
+.developer-details h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: #222;
+}
+
+.developer-role {
+  margin: 0 0 14px;
+  font-weight: 600;
+  color: #0066cc;
+}
+
+.developer-bio {
+  margin: 0 0 20px;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.social-links {
+  display: flex;
+  gap: 14px;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  color: #fff;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.social-link svg {
+  width: 22px;
+  height: 22px;
+}
+
+.social-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+.social-link:focus-visible {
+  outline: 3px solid #0066cc;
+  outline-offset: 3px;
+}
+
+.social-link.github {
+  background-color: #24292f;
+}
+
+.social-link.facebook {
+  background-color: #1877f2;
+}
+
+.social-link.linkedin {
+  background-color: #0a66c2;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .contact-container {
+    max-width: 90%;
+  }
+}
+
 @media (max-width: 768px) {
+  .contact-container {
+    max-width: 100%;
+    padding: 30px 16px;
+  }
+
+  .contact-header {
+    margin-bottom: 35px;
+  }
+
   .contact-header h1 {
     font-size: 28px;
-  }
-  .contact-container {
-    max-width: 96%;
   }
 
   .subtitle {
     font-size: 16px;
   }
 
-  .about-section h2 {
+  .about-section {
+    padding: 0;
+    margin-bottom: 35px;
+  }
+
+  .about-section h2,
+  .developer-heading {
     font-size: 24px;
+  }
+
+  .developer-heading {
+    padding: 0;
   }
 
   .label {
@@ -146,10 +279,32 @@
     display: block;
     margin-bottom: 5px;
   }
+
+  .developer-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 22px;
+    border-left: none;
+    border-top: 5px solid #0066cc;
+  }
+
+  .developer-photo {
+    width: 150px;
+    height: 150px;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 480px) {
-  .contact-card {
+  .contact-container {
+    padding: 24px 12px;
+  }
+
+  .contact-card,
+  .developer-card {
     padding: 20px;
   }
 
@@ -157,7 +312,11 @@
     font-size: 24px;
   }
 
-  .contact-form {
-    grid-template-columns: 1fr;
+  .developer-details h3 {
+    font-size: 20px;
+  }
+
+  .developer-bio {
+    font-size: 15px;
   }
 }
